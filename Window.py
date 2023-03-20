@@ -56,8 +56,9 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
         icon = ImageTk.PhotoImage(image)
 
         img_tag = screen.create_image(IconW, IconH, image=icon, anchor=NW)
-        screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Run(event,OS,str(ProgramPath) + "." + str(File) + "." + str(File)))
+        sys = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event, runnable = str(ProgramPath) + "." + str(File) + "." + str(File): Run(event,OS,runnable))
         imgreg.append(icon)
+        sysreg.append(sys)
         
         IconW += WRatio
         
@@ -91,8 +92,9 @@ def initApps(OS, screen, WRatio, HRatio):
         imgreg.append(icon)
 
         img_tag = screen.create_image(IconW, IconH, image=icon, anchor=NW)
-        screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Run(event,OS,str(AppPath) + "." + str(File) + "." + str(File)))
+        app = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event, runnable = str(AppPath) + "." + str(File) + "." + str(File): Run(event,OS,runnable))
         imgreg.append(icon)
+        appreg.append(app)
 
         screen.create_text(IconW+Size/2, IconH+Size, text=str(File), font=("Arial", 16), fill="white", anchor=N)
 
