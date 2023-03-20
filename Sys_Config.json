@@ -1,6 +1,1 @@
-{
-    "TaskBar_Color":"gray",
-    "Wallpaper_Color":"dark blue",
-    "Fullscreen":"False",
-    "Resolution":["960","540"]
-}
+{"TaskBar_Color": "gray", "Wallpaper_Color": "dark blue", "Fullscreen": false, "Resolution": ["960", "540"]}

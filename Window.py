@@ -5,20 +5,19 @@ import json
 
 from RunHandler import *
 
-
-
 def initOS():
     OS = Tk()
     OS.title("PY OS v0.0")
     Config = json.load(open("Sys_Config.json","r"))
     Resolution = Config["Resolution"]
+    print(Resolution,Resolution[0],Resolution[1])
     OS.attributes("-fullscreen",Config["Fullscreen"])
-    print(Config["Fullscreen"])
-    if Config["Fullscreen"] in "False":
+    if Config["Fullscreen"] == False:
         OS.geometry(Resolution[0] + "x" + Resolution[1])
         print(Resolution[0] + "x" + Resolution[1])
-    else:
-        OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenwidth()))
+    elif Config["Fullscreen"] == True:
+        OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
+        print(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
     OS.update()
     return OS
 
@@ -32,12 +31,9 @@ def initScreen(OS):
     return screen
 
 def initInfo_Icons(OS):
-    
-    Ratios = [[4,3],[16,9],[5,4],[1,1],[3,4],[9,16],[4,5],[1,1]]
-    for x in Ratios:
-        if (OS.winfo_width()/OS.winfo_height()) == (x[0]/x[1]):
-            WRatio = (OS.winfo_width()/x[0])/2
-            HRatio = (OS.winfo_height()/x[1])/2
+    Ratio = OS.winfo_width()/OS.winfo_height()
+    WRatio = (OS.winfo_width()/Ratio)
+    HRatio = (OS.winfo_height()/Ratio)
     core_iconinfo = [WRatio,HRatio]
     return core_iconinfo
 
@@ -50,7 +46,7 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
     ProgramPath = 'SystemPrograms'
 
     IconW = Size/4
-    IconH = OS.winfo_height()-((IconW/2)+Size)
+    IconH = OS.winfo_height()-(((IconW/2)+Size))
     
     print("Sys initialized!",IconW,IconH)
 
@@ -87,7 +83,7 @@ def initApps(OS, screen, WRatio, HRatio):
     AppPath = 'Apps'
 
     IconW = 20
-    IconH = HRatio/2
+    IconH = Size/4
     
     for File in os.listdir(AppPath):
 

@@ -1,4 +1,5 @@
 import importlib.util
+import tkinter
 import os
 import sys
 
@@ -12,6 +13,7 @@ def Run(event, OS, File):
     module = importlib.import_module('.' + module_name, package=package_path)
     module.Main()
     
+    OS.update()
     # Remove the module from the cache
     del sys.modules['.'.join([package_path, module_name])]
 
