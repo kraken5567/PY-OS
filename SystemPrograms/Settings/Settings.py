@@ -1,51 +1,71 @@
-def Main():
-    import tkinter as Tk
-    import json
+def Main(OS):
+    from tkinter import BooleanVar, Radiobutton, Label, Entry, Button, Toplevel, X, Y, StringVar
+    import json as J
 
-    Open = True
-    while Open == True:
-    #Initiate
-        settings = "Sys_Config.json"
-        Fullscreen_var = Tk.BooleanVar()
-        root = Tk.Tk()
+    print("Settings Ran!")
+    Setting_Frame = Toplevel()
 
-        #Window setup!
-        Top_Label = Tk.Label(root,text="Settings Menu")
+    
+    Fullscreen = BooleanVar()
+    #Resolution, Wallpaper_Color, and TaskBar_Color are all entries
+    
 
-        Fullscreen = Tk.Radiobutton(root,text="Fullscreen",variable=Fullscreen_var,value=True)
-        Windowed = Tk.Radiobutton(root,text="Windowed",variable=Fullscreen_var,value=False)
+    with open("Sys_Config.json","r") as R_cfg:
+        cfg_r = J.load(R_cfg)
 
-        #functions
-        def Exit():
-            root.destroy()
+        Fullscr = Radiobutton(Setting_Frame, text="Fullscreen", variable=Fullscreen, value = True)
+        Windowed = Radiobutton(Setting_Frame, text="Windowed", variable=Fullscreen, value = False)
+        
+        RLabel = Label(Setting_Frame,text="Resolution(WxH)")
+        Resolution = Entry(Setting_Frame)
+        Resolution.insert(0,cfg_r["Resolution"])
+
+        TBarLabel = Label(Setting_Frame,text="Taskbar's Color")
+        Taskbar_Color = Entry(Setting_Frame)
+        Taskbar_Color.insert(0,cfg_r["Taskbar_Color"])
+
+        WPLabel = Label(Setting_Frame,text="Wallpaper's Color")
+        Wallpaper_Color = Entry(Setting_Frame)
+        Wallpaper_Color.insert(0,cfg_r["Wallpaper_Color"])
+
+
+
+        
+        Fullscr.grid(row=1, column=0)
+        Windowed.grid(row=1, column=1)
+
+        RLabel.grid(row=2,column=0, columnspan=2)
+        Resolution.grid(row=3, column=0, columnspan=2)
+
+        TBarLabel.grid(row=4, column=0)
+        Taskbar_Color.grid(row=4, column=1)
+
+        WPLabel.grid(row=5, column=0)
+        Wallpaper_Color.grid(row=5, column=1)
 
         def Apply():
-            # Load the configuration from the file
-            with open(settings, "r") as f:
-                config_json = json.load(f)
+            with open("Sys_Config.json", "r") as R_cfg:
+                cfg = J.load(R_cfg)
+                for k in cfg:
+                    if k == "Fullscreen":
+                        cfg[k] = Fullscreen.get()
+                    elif k == "Resolution":
+                        cfg[k] = Resolution.get()
+                    elif k == "Taskbar_Color":
+                        cfg[k] = Taskbar_Color.get()
+                    elif k == "Wallpaper_Color":
+                        cfg[k] = Wallpaper_Color.get()
+                with open("Sys_Config.json", "w") as W_cfg:
+                    J.dump(cfg, W_cfg)
 
-            # Update the configuration dictionary
-            config_json["Fullscreen"] = Fullscreen_var.get()
+        def Exit():
+            Setting_Frame.destroy()
 
-            # Save the updated configuration to the file
-            with open(settings, "w") as f:
-                json.dump(config_json, f)
-                print("applied!")
-        
-        #function runners
-        apply = Tk.Button(root,text="Apply Settings",command=Apply)
-        exit = Tk.Button(root,text="Exit",command=Exit)
+        # Bottom Buttons
+        apply = Button(Setting_Frame,text="Apply Settings",bg="green",command=Apply)
+        exit = Button(Setting_Frame,text="          Exit          ",bg="red",command=Exit)
 
-        #The Packening!
-        Top_Label.pack()
-        Fullscreen.pack()
-        Windowed.pack()
-        
+        apply.grid(row=6,column=0)
+        exit.grid(row=6,column=1)
 
-        apply.pack()
-        exit.pack()
-
-        
-        
-        #Always Last!
-        root.mainloop()
+        OS.mainloop()

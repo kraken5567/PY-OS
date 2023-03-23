@@ -1,6 +1,4 @@
 import importlib.util
-import tkinter
-import os
 import sys
 
 def Run(event, OS, File):
@@ -11,11 +9,14 @@ def Run(event, OS, File):
 
     # Import the module and run its Main function
     module = importlib.import_module('.' + module_name, package=package_path)
-    module.Main()
-    
-    OS.update()
-    # Remove the module from the cache
+    importlib.reload(module)
+    module.Main(OS)
     del sys.modules['.'.join([package_path, module_name])]
+    OS.update()
 
-def initSearch(OS,screen):
-    print("Does Nothing")
+
+def Reload(OS, screen, core_iconinfo, sys_reg, app_reg):
+    import BootLoader
+    import importlib
+    importlib.reload(BootLoader)
+    BootLoader.Boot()
