@@ -7,34 +7,55 @@ from RunHandler import *
 
 def initOS():
     OS = Tk()
-    OS.title("PY OS v0.0")
-    Config = json.load(open("Sys_Config.json","r"))
-    OS.attributes("-fullscreen",Config["Fullscreen"])
-    if Config["Fullscreen"] == False:
-        OS.geometry(Config["Resolution"])
-    elif Config["Fullscreen"] == True:
-        OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
-    OS.update()
-    return OS
+    OS.title("PY OS v1.0")
+    with open("Sys_Config.json","r") as C:
+        Config = json.load(C)
+        C.close()
+
+        OS.attributes("-fullscreen",Config["Fullscreen"])
+        if Config["Fullscreen"] == False:
+            OS.geometry(Config["Resolution"])
+        elif Config["Fullscreen"] == True:
+            OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
+        OS.update()
+        return OS
 
 def initScreen(OS):
-    Config = json.load(open("Sys_Config.json","r"))
-    W = OS.winfo_width()
-    H = OS.winfo_height()
-    screen = Canvas(OS,width=W,height=H,bg=Config["Wallpaper_Color"])
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+    config_file.close()
+
+    screen = Canvas(OS, width=w, height=h, bg=config["Wallpaper_Color"])
     screen.pack()
-    programbar = screen.create_rectangle(0,H-80,W,H,fill=Config["Taskbar_Color"])
-    screen_reg = [screen,programbar]
+    programbar = screen.create_rectangle(0, h-80, w, h, fill=config["Taskbar_Color"])
+    screen_reg = [screen, programbar]
     return screen_reg
 
 def initInfo_Icons(OS):
-    Ratio = OS.winfo_width()/OS.winfo_height()
-    WRatio = (OS.winfo_width()/Ratio)
-    HRatio = (OS.winfo_height()/Ratio)
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+    config_file.close()
+
+    Ratio = w/h
+    WRatio = (w/Ratio)
+    HRatio = (h/Ratio)
     core_iconinfo = [WRatio,HRatio]
     return core_iconinfo
 
 def initSystemPrograms(OS,screen,WRatio,HRatio):
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+    config_file.close()
+
     Size = 64
 
     imgreg = []
@@ -43,7 +64,7 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
     ProgramPath = 'SystemPrograms'
 
     IconW = Size/4
-    IconH = OS.winfo_height()-(((IconW/2)+Size))
+    IconH = h-(((IconW/2)+Size))
 
     for File in os.listdir(ProgramPath):
 
@@ -60,13 +81,20 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
         
         IconW += (5*Size/4)
         
-        if IconW > OS.winfo_width():
+        if IconW > w:
             break
     
     Sys_Reg = [sysreg,imgreg]
     return Sys_Reg
 
 def initApps(OS, screen, WRatio, HRatio):
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+    config_file.close()
+
     Size = 64
 
     imgreg = []
@@ -81,9 +109,6 @@ def initApps(OS, screen, WRatio, HRatio):
 
         imgFile = str(AppPath) + "/" + str(File) + "/" + str(File) + ".png"
 
-        if os.path.exists(imgFile):
-            print("Exists!")
-
         image = Image.open(imgFile)
         image = image.resize((Size, Size))
         icon = ImageTk.PhotoImage(image)
@@ -97,23 +122,31 @@ def initApps(OS, screen, WRatio, HRatio):
         screen.create_text(IconW+Size/2, IconH+Size, text=str(File), font=("Arial", 16), fill="white", anchor=N)
 
         IconW += WRatio
-        if IconW > OS.winfo_width():
+        if IconW > w:
             IconW = 20
             IconH += HRatio
-        if IconH > (OS.winfo_height()-Size):
+        if IconH > (h-Size):
             break
     
     App_Reg = [appreg,imgreg]
     return App_Reg
 
 def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+    config_file.close()
+
     Size = 64
     reloader_reg = []
     imgFile = "Reloader.png"
+
     image = Image.open(imgFile).resize((Size, Size))
     icon = ImageTk.PhotoImage(image)
 
-    img_tag = screen.create_image(OS.winfo_width()-Size, OS.winfo_height()-((5*Size)/4), image=icon, anchor=NW)
+    img_tag = screen.create_image(w-Size, h-((5*Size)/4), image=icon, anchor=NW)
     rload = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Reload(OS,screen,programbar))
 
     reloader_reg.append(icon)

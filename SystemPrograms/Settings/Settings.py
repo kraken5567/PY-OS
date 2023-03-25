@@ -2,16 +2,13 @@ def Main(OS):
     from tkinter import BooleanVar, Radiobutton, Label, Entry, Button, Toplevel, X, Y, StringVar
     import json as J
 
-    print("Settings Ran!")
     Setting_Frame = Toplevel()
-
-    
     Fullscreen = BooleanVar()
     #Resolution, Wallpaper_Color, and TaskBar_Color are all entries
-    
 
     with open("Sys_Config.json","r") as R_cfg:
         cfg_r = J.load(R_cfg)
+        R_cfg.close()
 
         Fullscr = Radiobutton(Setting_Frame, text="Fullscreen", variable=Fullscreen, value = True)
         Windowed = Radiobutton(Setting_Frame, text="Windowed", variable=Fullscreen, value = False)
@@ -46,6 +43,8 @@ def Main(OS):
         def Apply():
             with open("Sys_Config.json", "r") as R_cfg:
                 cfg = J.load(R_cfg)
+                R_cfg.close()
+
                 for k in cfg:
                     if k == "Fullscreen":
                         cfg[k] = Fullscreen.get()

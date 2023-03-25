@@ -1,6 +1,7 @@
 import importlib.util
 import sys
 
+
 def Run(event, OS, File):
     # Parse the module path from the File argument
     module_path = File.split('.')
@@ -16,13 +17,24 @@ def Run(event, OS, File):
 
 
 def Reload(OS,screen,programbar):
+    print("Reloading...")
     import json as J
-    with open("Sys_Config.json", "r") as C:
-        Config = J.load(C)
-        if Config["Fullscreen"]:
-            OS.attributes("-fullscreen",Config["Fullscreen"])
-            OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
-        else:
-            OS.geometry(Config["Resolution"])
-        screen.itemconfig(programbar, fill=Config["Taskbar_Color"])
-        screen.configure(bg=Config["Wallpaper_Color"])
+    from Window import initScreen, initInfo_Icons, initSystemPrograms, initApps, initReloader
+    with open("Sys_Config.json", "r") as config_file:
+        config = J.load(config_file)
+    
+    if config["Fullscreen"]:
+        OS.attributes("-fullscreen", config["Fullscreen"])
+        OS.geometry("{}x{}+0+0".format(OS.winfo_screenwidth(), OS.winfo_screenheight()))
+    else:
+        OS.geometry(config["Resolution"])
+
+    # Reestablish everything! :)
+    screen.destroy()
+    [screen, programbar] = initScreen(OS)
+    core_iconinfo = initInfo_Icons(OS)
+    sys_reg = initSystemPrograms(OS, screen, core_iconinfo[0], core_iconinfo[1])
+    app_reg = initApps(OS, screen, core_iconinfo[0], core_iconinfo[1])
+    reloader_reg = initReloader(OS, screen, programbar, core_iconinfo, sys_reg, app_reg)
+
+    OS.mainloop()
