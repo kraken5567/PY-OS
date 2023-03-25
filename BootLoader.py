@@ -1,17 +1,19 @@
 from Window import *
 
-# Bootloader Here
-OS = initOS()
-screen = initScreen(OS)
+def Main():
+    boot_reg = Boot()
+    while True:
+        boot_reg[0].update()
 
-# Any vars needed to globalize
-core_iconinfo = initInfo_Icons(OS)
+def Boot():
+    #Start
+    OS = initOS()
+    [screen,programbar] = initScreen(OS)
+    core_iconinfo = initInfo_Icons(OS)
+    sys_reg = initSystemPrograms(OS,screen,core_iconinfo[0],core_iconinfo[1])
+    app_reg = initApps(OS,screen,core_iconinfo[0],core_iconinfo[1])
+    reloader_reg = initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg)
+    boot_reg = [OS,screen,programbar,core_iconinfo,sys_reg,app_reg]
+    return boot_reg
 
-#Icons and programs
-sys_reg = initSystemPrograms(OS,screen,core_iconinfo[0],core_iconinfo[1])
-app_reg = initApps(OS,screen,core_iconinfo[0],core_iconinfo[1])
-Search_Menu = initSearch(OS,screen)
-# Looped Functions
-
-# At The End
-OS.mainloop()
+Main()
