@@ -8,10 +8,11 @@ def Main(OS):
     lines = file_text.count('\n') 
 
     #display the file as T.Text
-    # cut every line at "\n"
-    # store the content per line
+    # cut every line at "\n" and put in a list (item/line)
     # allow editing and resubmission of the line
+        # redisplay the text based on edits
     # allow running of the program
+        #Run or Customized Run
 
     # Done
 
