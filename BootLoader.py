@@ -2,8 +2,7 @@ from Window import *
 
 def Main():
     boot_reg = Boot()
-    while True:
-        boot_reg[0].update()
+    boot_reg[0].mainloop()
 
 def Boot():
     #Start
