@@ -106,7 +106,6 @@ def initApps(OS, screen, WRatio, HRatio):
     IconH = Size/4
     
     for File in os.listdir(AppPath):
-
         imgFile = str(AppPath) + "/" + str(File) + "/" + str(File) + ".png"
 
         image = Image.open(imgFile)
@@ -119,12 +118,12 @@ def initApps(OS, screen, WRatio, HRatio):
         imgreg.append(icon)
         appreg.append(app)
 
-        screen.create_text(IconW+Size/2, IconH+Size, text=str(File), font=("Arial", 16), fill="white", anchor=N)
+        screen.create_text(IconW+Size/2, IconH+Size, text=str(File), font=("Arial", 12), fill="white", anchor=N)
 
-        IconW += WRatio
+        IconW += (3*Size/2)
         if IconW > w:
             IconW = 20
-            IconH += HRatio
+            IconH += IconH
         if IconH > (h-Size):
             break
     
