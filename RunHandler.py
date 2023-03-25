@@ -15,8 +15,14 @@ def Run(event, OS, File):
     OS.update()
 
 
-def Reload(OS, screen, core_iconinfo, sys_reg, app_reg):
-    import BootLoader
-    import importlib
-    importlib.reload(BootLoader)
-    BootLoader.Boot()
+def Reload(OS,screen,programbar):
+    import json as J
+    with open("Sys_Config.json", "r") as C:
+        Config = J.load(C)
+        if Config["Fullscreen"]:
+            OS.attributes("-fullscreen",Config["Fullscreen"])
+            OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
+        else:
+            OS.geometry(Config["Resolution"])
+        screen.itemconfig(programbar, fill=Config["Taskbar_Color"])
+        screen.configure(bg=Config["Wallpaper_Color"])

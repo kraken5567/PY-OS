@@ -12,10 +12,8 @@ def initOS():
     OS.attributes("-fullscreen",Config["Fullscreen"])
     if Config["Fullscreen"] == False:
         OS.geometry(Config["Resolution"])
-        print(Config["Resolution"])
     elif Config["Fullscreen"] == True:
         OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
-        print(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
     OS.update()
     return OS
 
@@ -23,11 +21,11 @@ def initScreen(OS):
     Config = json.load(open("Sys_Config.json","r"))
     W = OS.winfo_width()
     H = OS.winfo_height()
-    print(W,H)
     screen = Canvas(OS,width=W,height=H,bg=Config["Wallpaper_Color"])
     screen.pack()
     programbar = screen.create_rectangle(0,H-80,W,H,fill=Config["Taskbar_Color"])
-    return screen
+    screen_reg = [screen,programbar]
+    return screen_reg
 
 def initInfo_Icons(OS):
     Ratio = OS.winfo_width()/OS.winfo_height()
@@ -46,15 +44,10 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
 
     IconW = Size/4
     IconH = OS.winfo_height()-(((IconW/2)+Size))
-    
-    print("Sys initialized!",IconW,IconH)
 
     for File in os.listdir(ProgramPath):
 
         imgFile = str(ProgramPath) + "/" + str(File) + "/" + str(File) + ".png"
-
-        if os.path.exists(imgFile):
-            print("Exists!")
 
         image = Image.open(imgFile)
         image = image.resize((Size, Size))
@@ -112,7 +105,8 @@ def initApps(OS, screen, WRatio, HRatio):
     
     App_Reg = [appreg,imgreg]
     return App_Reg
-def initReloader(OS,screen,core_iconinfo,sys_reg,app_reg):
+
+def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
     Size = 64
     reloader_reg = []
     imgFile = "Reloader.png"
@@ -120,7 +114,7 @@ def initReloader(OS,screen,core_iconinfo,sys_reg,app_reg):
     icon = ImageTk.PhotoImage(image)
 
     img_tag = screen.create_image(OS.winfo_width()-Size, OS.winfo_height()-((5*Size)/4), image=icon, anchor=NW)
-    rload = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Reload(OS,screen,core_iconinfo,sys_reg,app_reg))
+    rload = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Reload(OS,screen,programbar))
 
     reloader_reg.append(icon)
     reloader_reg.append(rload)
