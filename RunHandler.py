@@ -17,7 +17,6 @@ def Run(event, OS, File):
 
 
 def Reload(OS,screen,programbar):
-    print("Reloading...")
     import json as J
     from Window import initScreen, initInfo_Icons, initSystemPrograms, initApps, initReloader
     with open("Sys_Config.json", "r") as config_file:
@@ -31,7 +30,7 @@ def Reload(OS,screen,programbar):
 
     # Reestablish everything! :)
     screen.destroy()
-    [screen, programbar] = initScreen(OS)
+    [screen,programbar, Logo] = initScreen(OS)
     core_iconinfo = initInfo_Icons(OS)
     sys_reg = initSystemPrograms(OS, screen, core_iconinfo[0], core_iconinfo[1])
     app_reg = initApps(OS, screen, core_iconinfo[0], core_iconinfo[1])

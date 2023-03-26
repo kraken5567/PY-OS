@@ -28,10 +28,22 @@ def initScreen(OS):
     h = int(res[1])
     config_file.close()
 
+    Size = 64
+    IconH = h-((8)+Size)
+
     screen = Canvas(OS, width=w, height=h, bg=config["Wallpaper_Color"])
     screen.pack()
     programbar = screen.create_rectangle(0, h-80, w, h, fill=config["Taskbar_Color"])
-    screen_reg = [screen, programbar]
+
+    imgFile = "PyOSV1.0.png"
+
+    image = Image.open(imgFile)
+    Logo = ImageTk.PhotoImage(image)
+    img_tag = screen.create_image(8, IconH, image=Logo, anchor=NW)
+    
+
+    screen.update()
+    screen_reg = [screen, programbar, Logo]
     return screen_reg
 
 def initInfo_Icons(OS):
@@ -63,8 +75,8 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
 
     ProgramPath = 'SystemPrograms'
 
-    IconW = Size/4
-    IconH = h-(((IconW/2)+Size))
+    IconW = Size+Size/4
+    IconH = h-(((Size/8)+Size))
 
     for File in os.listdir(ProgramPath):
 
@@ -79,7 +91,7 @@ def initSystemPrograms(OS,screen,WRatio,HRatio):
         imgreg.append(icon)
         sysreg.append(sys)
         
-        IconW += (5*Size/4)
+        IconW += 5*Size/4
         
         if IconW > w:
             break
