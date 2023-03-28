@@ -5,7 +5,7 @@ def Main(OS):
     Coder = T.Toplevel()
     Coder.title("PyOS Coder")
 
-    file_text = FF.Main(OS)
+    file_text = FF.FFImported()
 
     code_vis = T.Text(Coder,height=20,font=8)
     T.Scrollbar(code_vis)
