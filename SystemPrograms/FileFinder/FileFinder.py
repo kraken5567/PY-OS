@@ -5,8 +5,9 @@ def Main(OS):
 
     selection = T.StringVar()
 
-    FileManager = T.Toplevel(bg="dark gray")
+    FileManager = T.Toplevel(OS)
     FileManager.title("File Manager")
+    FileManager.transient(OS)
 
     # Evil Global
     global Location
@@ -14,7 +15,7 @@ def Main(OS):
     #--------------------
 
     lister = T.Label(FileManager)
-    lister.config(text=Location,bg="dark gray")
+    lister.config(text=Location)
     lister.grid(row=0,columnspan=3,sticky='we')
 
     Error = T.Label(FileManager,fg="red",bg="black")
@@ -49,11 +50,13 @@ def Main(OS):
     def OpenFile(select):
         global Location
         if select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
-            Error.config(text="Image editting not added yet!")
+            import SystemPrograms.Painter.Painter as Pnt
+            importlib.reload(Pnt)
+            Pnt.redraw(OS,select,Location)
         elif not select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
             import SystemPrograms.Noterer.Noterer as Nt
             importlib.reload(Nt)
-            Nt.ReadEdit(select,Location)
+            Nt.ReadEdit(OS,select,Location)
             del Nt
     
     def NewFile(select):
