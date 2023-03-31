@@ -1,4 +1,7 @@
 # PY-OS
+
+![pyos-animated-background-pixilart](https://user-images.githubusercontent.com/64876071/228997943-ba44dbed-2299-415d-9235-fc77f57000bc.gif)
+
 Python Based Faux-Operating System
 
 Yes, you can code python in this.
