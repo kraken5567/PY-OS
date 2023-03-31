@@ -63,7 +63,6 @@ def Main(OS):
         global Location
         if not os.path.exists(os.path.join(Location, NewItem.get())):
             with open(os.path.join(Location, NewItem.get()), 'w') as NewFile:
-                NewFile.write("")
                 NewFile.close()
 
     #Folder Stuff
@@ -82,7 +81,7 @@ def Main(OS):
             os.mkdir(os.path.join(Location, NewItem.get()))
 
     # button stuff
-    buttonList = ["OpenFile","NewFile","OpenFolder","NewFolder"]
+    buttonList = ["Open File","New File","Open Folder","New Folder"]
     funcList = [OpenFile,NewFile,OpenFolder,NewFolder]
     y = 0
     z = 0

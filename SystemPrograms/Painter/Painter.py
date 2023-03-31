@@ -25,8 +25,11 @@ def Main(OS):
     #rgb inputs
     global red, green, blue
     red = T.Entry(easel,bg="red")
+    red.insert(0,0)
     green = T.Entry(easel,bg="green")
+    green.insert(0,0)
     blue = T.Entry(easel,bg="blue")
+    blue.insert(0,0)
 
     name = T.Entry(easel)
 
@@ -79,9 +82,9 @@ def redraw(OS,select,Location):
     easel = T.Toplevel(OS)
 
     #loads the image to a canvas
-    H = 200
-    W = 200
-    image = Image.open(f"{Location}/{select}")
+    H = 400 
+    W = 400
+    image = Image.open(f"{Location}\\{select}")
     if (image.width,image.height) < (W,H):
         dW = math.trunc(W/image.width)
         dH = math.trunc(H/image.height)
