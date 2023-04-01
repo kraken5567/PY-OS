@@ -150,16 +150,12 @@ def FFImported(OS):
 
 
     # file stuff
-    def OpenFile(select):
+    def SelectFile(select):
         global Location
         if select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
             pass
         elif not select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
-            import Apps.PyOSCoder.PyOSCoder as Coder
-            importlib.reload(Coder)
-            Coder.coder(os.path.join(Location, select))
-
-            
+            selected = os.path.join(Location, select)
 
     #Folder Stuff
     def OpenFolder(select):
@@ -170,11 +166,20 @@ def FFImported(OS):
             x.destroy()
         allRButtons = updateContents()
         return Location
+    
+    def SelectFolder(select):
+        global selected
+        selected = Location
+        print("SELECTED FOLDER: ",selected)
+        print(selected == ((None) or (False)))
+        
 
+    global selected
+    selected = False
 
     # button stuff
-    buttonList = ["Open File","Open Folder",]
-    funcList = [OpenFile,OpenFolder,]
+    buttonList = ["Select File","Open Folder","Select Current Folder"]
+    funcList = [SelectFile,OpenFolder,SelectFolder]
     y = 0
     z = 0
     n = 0
@@ -187,10 +192,10 @@ def FFImported(OS):
             z += 1
         n += 1
 
-    EntryLabel = T.Label(FileManager,text="Entry for 'New' Items")
-    EntryLabel.grid(row=z+1,column=1,columnspan=2)
-
-    NewItem= T.Entry(FileManager)
-    NewItem.grid(row=z+2,column=1,columnspan=2)
-
-    FileManager.mainloop()
+    while True:
+        print(selected)
+        if selected == ((None) or (False)):
+            FileManager.update()
+        else:
+            print("here")
+            return selected
