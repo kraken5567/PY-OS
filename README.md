@@ -1,3 +1,6 @@
+# Current Tasks
+https://trello.com/b/hIxnUBZ0/py-os-dev-work-list
+
 # PY-OS
 
 ![pyos-animated-background-pixilart (1)](https://user-images.githubusercontent.com/64876071/229265520-f9fd9ca4-d309-4c2a-8957-aea27070f23d.gif)
