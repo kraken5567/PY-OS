@@ -152,9 +152,8 @@ def FFImported(OS):
     # file stuff
     def SelectFile(select):
         global Location
-        if select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
-            pass
-        elif not select.endswith((".png","jpg","jpeg",".gif",".bmp",".tif",".tiff")):
+        global selected
+        if "." in select:
             selected = os.path.join(Location, select)
 
     #Folder Stuff
@@ -198,4 +197,5 @@ def FFImported(OS):
             FileManager.update()
         else:
             print("here")
+            FileManager.destroy()
             return selected

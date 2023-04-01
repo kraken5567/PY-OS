@@ -1,10 +1,14 @@
 def Main(OS):
-    from tkinter import BooleanVar, Radiobutton, Label, Entry, Button, Toplevel, X, Y, StringVar
+    from tkinter import BooleanVar, Radiobutton, IntVar, Label, Entry, Button, Toplevel, X, Y, END
     import json as J
+    import importlib.util
+    import SystemPrograms.FileFinder.FileFinder as FF
+    import os
 
-    Setting_Frame = Toplevel()
+    Setting_Frame = Toplevel(OS)
     Fullscreen = BooleanVar()
-    #Resolution, Wallpaper_Color, and TaskBar_Color are all entries
+    
+    #Resolution, Wallpaper_Color/Image, and TaskBar_Color are all entries
 
     with open("Sys_Config.json","r") as R_cfg:
         cfg_r = J.load(R_cfg)
@@ -20,12 +24,17 @@ def Main(OS):
         TBarLabel = Label(Setting_Frame,text="Taskbar's Color")
         Taskbar_Color = Entry(Setting_Frame)
         Taskbar_Color.insert(0,cfg_r["Taskbar_Color"])
+        if "/" in cfg_r["Wallpaper"]:
+            WallpaperFormat = IntVar(value="Wallpaper Image")
+        else:
+            WallpaperFormat = IntVar(value="Wallpaper Color")
 
-        WPLabel = Label(Setting_Frame,text="Wallpaper's Color")
-        Wallpaper_Color = Entry(Setting_Frame)
-        Wallpaper_Color.insert(0,cfg_r["Wallpaper_Color"])
-
-
+        WPCLabel = Radiobutton(Setting_Frame,text="Wallpaper's Color",variable=WallpaperFormat,value=0)
+        WPILabel = Radiobutton(Setting_Frame,text="Wallpaper Image",variable=WallpaperFormat,value=1)
+        Wallpaper = Entry(Setting_Frame)
+        Wallpaper.insert(0,cfg_r["Wallpaper"])
+        
+        
 
         
         Fullscr.grid(row=1, column=0)
@@ -37,8 +46,20 @@ def Main(OS):
         TBarLabel.grid(row=4, column=0)
         Taskbar_Color.grid(row=4, column=1)
 
-        WPLabel.grid(row=5, column=0)
-        Wallpaper_Color.grid(row=5, column=1)
+        WPCLabel.grid(row=5, column=0)
+        WPILabel.grid(row=5, column=1)
+        Wallpaper.grid(row=6, column=0)
+
+        def ImageLocation():
+            importlib.reload(FF)
+            File = FF.FFImported(OS)
+            WallpaperFormat.set(value="Wallpaper Image")
+            File = os.path.relpath(File, os.getcwd())
+            Wallpaper.delete(0,END)
+            Wallpaper.insert(0,File)
+
+        fileLoc = Button(Setting_Frame,text="Select Image",command=ImageLocation)
+        fileLoc.grid(row=6, column=1)
 
         def Apply():
             with open("Sys_Config.json", "r") as R_cfg:
@@ -52,8 +73,8 @@ def Main(OS):
                         cfg[k] = Resolution.get()
                     elif k == "Taskbar_Color":
                         cfg[k] = Taskbar_Color.get()
-                    elif k == "Wallpaper_Color":
-                        cfg[k] = Wallpaper_Color.get()
+                    elif k == "Wallpaper":
+                        cfg[k] = Wallpaper.get()
                 with open("Sys_Config.json", "w") as W_cfg:
                     J.dump(cfg, W_cfg)
 
@@ -64,7 +85,7 @@ def Main(OS):
         apply = Button(Setting_Frame,text="Apply Settings",bg="green",command=Apply)
         exit = Button(Setting_Frame,text="          Exit          ",bg="red",command=Exit)
 
-        apply.grid(row=6,column=0)
-        exit.grid(row=6,column=1)
+        apply.grid(row=9,column=0)
+        exit.grid(row=9,column=1)
 
         OS.mainloop()

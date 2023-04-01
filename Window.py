@@ -31,19 +31,32 @@ def initScreen(OS):
     Size = 64
     IconH = h-((8)+Size)
 
-    screen = Canvas(OS, width=w, height=h, bg=config["Wallpaper_Color"])
+    screen = Canvas(OS, width=w, height=h)
+
+    if os.path.isfile(config["Wallpaper"]):
+        img = Image.open(config["Wallpaper"])
+        if ".gif" in config["Wallpaper"]:
+            Paper = ImageTk.PhotoImage(img, format="gif")
+        img = img.resize((w, h), Image.ANTIALIAS)
+        if img.format != "gif":
+            Paper = ImageTk.PhotoImage(img)
+            screen.create_image(0, 0, anchor=NW, image=Paper)
+    
+    else:
+        screen.configure(bg=config["Wallpaper"])
+        Paper = None
+    
     screen.pack()
+
     programbar = screen.create_rectangle(0, h-80, w, h, fill=config["Taskbar_Color"])
 
     imgFile = "PyOSV1.0.png"
-
     image = Image.open(imgFile)
     Logo = ImageTk.PhotoImage(image)
     img_tag = screen.create_image(8, IconH, image=Logo, anchor=NW)
-    
 
     screen.update()
-    screen_reg = [screen, programbar, Logo]
+    screen_reg = [screen, programbar, Logo, Paper]
     return screen_reg
 
 def initInfo_Icons(OS):
