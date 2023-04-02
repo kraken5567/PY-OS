@@ -1,7 +1,6 @@
 def Main(OS):
     import tkinter as T
     import PIL.ImageGrab as ImageGrab
-    import os
 
     easel = T.Toplevel(OS)
     easel.transient(OS)
@@ -82,7 +81,7 @@ def redraw(OS,select,Location):
     import tkinter as T
     from PIL import Image, ImageTk
     import math
-    import os
+    import PIL.ImageGrab as ImageGrab
 
     easel = T.Toplevel(OS)
 
@@ -100,6 +99,7 @@ def redraw(OS,select,Location):
     canvas.pack()
 
     #brush settings
+    global brush_color
     brush_size = math.trunc(dH/dW)
     brush_color = (0, 0, 0)
 
@@ -109,18 +109,26 @@ def redraw(OS,select,Location):
     #rgb inputs
     global red, green, blue
     red = T.Entry(easel,bg="red")
+    red.insert(0,0)
     green = T.Entry(easel,bg="green")
+    green.insert(0,0)
     blue = T.Entry(easel,bg="blue")
+    blue.insert(0,0)
 
     name = T.Entry(easel)
 
     def save_canvas():
-        filename = name.get()
-        if filename:
-            canvas.postscript(file=os.path.join(Location, filename + ".eps"))
-            img = Image.open(Location + filename + ".eps")
-            img.save(os.path.join(Location, filename + "png"), "PNG")
-            os.remove(os.path.join(Location, filename + "eps"))
+        x = easel.winfo_rootx() + canvas.winfo_x()
+        y = easel.winfo_rooty() + canvas.winfo_y()
+        width = canvas.winfo_width()
+        height = canvas.winfo_height()
+        image = ImageGrab.grab(bbox=(x, y, x+width, y+height))
+        import SystemPrograms.FileFinder.FileFinder as FF
+        Location = FF.FFImported(OS)
+        if "." in Location[-4:]:
+            image.save(f'{Location}')
+        elif "." not in Location[-4:]:
+            image.save(f'{Location}\\{name.get()}.png')
 
     #functions
     def change_color():
