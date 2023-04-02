@@ -30,7 +30,9 @@ def Main(OS):
 
     def updateContents():
         contents = ReadFolderContents()
-        allRButtons = []
+        global allRButtons
+        for button in allRButtons:
+            button.destroy()
         for x, y in enumerate(contents):
             if ("." in y[-5:]) and not ("." in y[:1]):
                 a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y, bg="blue",fg="Red")
@@ -43,6 +45,7 @@ def Main(OS):
 
 
     global allRButtons
+    allRButtons = []
     allRButtons = updateContents()
 
 
@@ -79,10 +82,20 @@ def Main(OS):
         global Location
         if not os.path.exists(os.path.join(Location, NewItem.get())):
             os.mkdir(os.path.join(Location, NewItem.get()))
+    
+    def Upward(select):
+        global Location
+        dirs = Location.split("\\")
+        if len(dirs) > 1:
+            Location = "\\".join(dirs[:-1])
+        else:
+            Location = ""
+        allRButtons = updateContents()
+
 
     # button stuff
-    buttonList = ["Open File","New File","Open Folder","New Folder"]
-    funcList = [OpenFile,NewFile,OpenFolder,NewFolder]
+    buttonList = ["Open File","New File","Open Folder","New Folder","Go Up a Level"]
+    funcList = [OpenFile,NewFile,OpenFolder,NewFolder,Upward]
     y = 0
     z = 0
     n = 0
@@ -96,10 +109,10 @@ def Main(OS):
         n += 1
 
     EntryLabel = T.Label(FileManager,text="Entry for 'New' Items")
-    EntryLabel.grid(row=z+1,column=1,columnspan=2)
+    EntryLabel.grid(row=9,column=1,columnspan=2)
 
     NewItem= T.Entry(FileManager)
-    NewItem.grid(row=z+2,column=1,columnspan=2)
+    NewItem.grid(row=10,column=1,columnspan=2)
 
 def FFImported(OS):
     import tkinter as T
