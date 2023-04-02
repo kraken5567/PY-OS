@@ -1,6 +1,6 @@
 def Main(OS):
     import tkinter as T
-    from PIL import Image, ImageTk
+    import PIL.ImageGrab as ImageGrab
     import os
 
     easel = T.Toplevel(OS)
@@ -10,12 +10,12 @@ def Main(OS):
     H = 400
     W = 400
 
-    global canvas
     canvas = T.Canvas(easel, bg="white", width=W, height=H)
     canvas.pack()
 
     #brush settings
     brush_size = 1
+    global brush_color
     brush_color = (0, 0, 0)
 
     global color_hex
@@ -35,13 +35,17 @@ def Main(OS):
     name = T.Entry(easel)
 
     def save_canvas():
-        global canvas
-        filename = name.get()
-        if filename:
-            canvas.postscript(file=os.path.join(Location, filename + ".eps"))
-            img = ImageTk.PhotoImage(Image.open(os.path.join(Location, filename + ".eps")))
-            img.save(os.path.join(Location, filename + "png"), "PNG")
-            os.remove(os.path.join(Location, filename + ".eps"))
+        x = easel.winfo_rootx() + canvas.winfo_x()
+        y = easel.winfo_rooty() + canvas.winfo_y()
+        width = canvas.winfo_width()
+        height = canvas.winfo_height()
+        image = ImageGrab.grab(bbox=(x, y, x+width, y+height))
+        import SystemPrograms.FileFinder.FileFinder as FF
+        Location = FF.FFImported(OS)
+        if "." in Location[-4:]:
+            image.save(f'{Location}')
+        elif "." not in Location[-4:]:
+            image.save(f'{Location}\\{name.get()}.png')
 
     #functions
     def change_color():

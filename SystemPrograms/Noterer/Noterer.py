@@ -38,8 +38,6 @@ def Main(OS):
 
     paper.mainloop()
 
-
-
 def ReadEdit(OS,select,Location):
     import tkinter as T
     import os

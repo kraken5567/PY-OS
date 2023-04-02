@@ -14,9 +14,17 @@ def Main(OS):
     Location = os.getcwd()
     #--------------------
 
-    lister = T.Label(FileManager)
-    lister.config(text=Location)
-    lister.grid(row=0,columnspan=3,sticky='we')
+    def SearchBar():
+        global Location
+        listerValue = lister.get(1.0,T.END)
+        Location = (listerValue.split("\n"))[0]
+        updateContents()
+
+    lister = T.Text(FileManager,bg="gray",height=1)
+    lister.insert(float(0),Location)
+    lister.grid(row=0,columnspan=2,sticky='we')
+    searchButton = T.Button(FileManager,command=SearchBar)
+    searchButton.grid(row=0,column=2,sticky='we')
 
     Error = T.Label(FileManager,fg="red",bg="black")
     Error.grid(row=1000,columnspan=3,sticky='we')
@@ -24,7 +32,8 @@ def Main(OS):
     # functions
     def ReadFolderContents():
         global Location
-        lister.config(text=Location)
+        lister.delete(float(1),T.END)
+        lister.insert(float(1),Location)
         fileFolderList = os.listdir(Location)
         return fileFolderList
 
@@ -35,9 +44,9 @@ def Main(OS):
             button.destroy()
         for x, y in enumerate(contents):
             if ("." in y[-5:]) and not ("." in y[:1]):
-                a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y, bg="blue",fg="Red")
+                a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y, bg="blue",fg="yellow")
             else:
-                a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y,bg="yellow",fg="red")
+                a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y,bg="yellow",fg="blue")
             a.grid(row=x+1,column=0,sticky='we')
             allRButtons.append(a)
             
@@ -129,9 +138,17 @@ def FFImported(OS):
     Location = os.getcwd()
     #--------------------
 
-    lister = T.Label(FileManager)
-    lister.config(text=Location)
-    lister.grid(row=0,columnspan=3,sticky='we')
+    def SearchBar():
+        global Location
+        listerValue = lister.get(1.0,T.END)
+        Location = (listerValue.split("\n"))[0]
+        updateContents()
+
+    lister = T.Text(FileManager,bg="gray",height=1)
+    lister.insert(float(0),Location)
+    lister.grid(row=0,columnspan=2,sticky='we')
+    searchButton = T.Button(FileManager,command=SearchBar)
+    searchButton.grid(row=0,column=2,sticky='we')
 
     Error = T.Label(FileManager,fg="red",bg="black")
     Error.grid(row=1000,columnspan=3,sticky='we')
@@ -139,7 +156,8 @@ def FFImported(OS):
     # functions
     def ReadFolderContents():
         global Location
-        lister.config(text=Location)
+        lister.delete(float(1),T.END)
+        lister.insert(float(1),Location)
         fileFolderList = os.listdir(Location)
         return fileFolderList
 
