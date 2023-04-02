@@ -146,7 +146,9 @@ def FFImported(OS):
 
     def updateContents():
         contents = ReadFolderContents()
-        allRButtons = []
+        global allRButtons
+        for button in allRButtons:
+            button.destroy()
         for x, y in enumerate(contents):
             if ("." in y[-5:]) and not ("." in y[:1]):
                 a = T.Radiobutton(FileManager, text = y, variable = selection, indicatoron=0, value = y, bg="blue",fg="Red")
@@ -159,6 +161,7 @@ def FFImported(OS):
 
 
     global allRButtons
+    allRButtons = []
     allRButtons = updateContents()
 
 
@@ -182,16 +185,22 @@ def FFImported(OS):
     def SelectFolder(select):
         global selected
         selected = Location
-        print("SELECTED FOLDER: ",selected)
-        print(selected == ((None) or (False)))
-        
+
+    def Upward(select):
+        global Location
+        dirs = Location.split("\\")
+        if len(dirs) > 1:
+            Location = "\\".join(dirs[:-1])
+        else:
+            Location = ""
+        allRButtons = updateContents()   
 
     global selected
     selected = False
 
     # button stuff
-    buttonList = ["Select File","Open Folder","Select Current Folder"]
-    funcList = [SelectFile,OpenFolder,SelectFolder]
+    buttonList = ["Select File","Open Folder","Select Current Folder","Up one Folder Level"]
+    funcList = [SelectFile,OpenFolder,SelectFolder,Upward]
     y = 0
     z = 0
     n = 0
@@ -205,10 +214,8 @@ def FFImported(OS):
         n += 1
 
     while True:
-        print(selected)
         if selected == ((None) or (False)):
             FileManager.update()
         else:
-            print("here")
             FileManager.destroy()
             return selected
