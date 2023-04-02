@@ -38,11 +38,11 @@ def Main(OS):
 
 
 
-def ReadEdit(select,Location):
+def ReadEdit(OS,select,Location):
     import tkinter as T
     import os
 
-    paper = T.Toplevel()
+    paper = T.Toplevel(OS)
     paper.title("File Editor")
     paper.columnconfigure(0, weight=1)
     paper.rowconfigure(0, weight=1)

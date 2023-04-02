@@ -1,6 +1,6 @@
 from tkinter import *
 import os
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageSequence
 import json
 
 from RunHandler import *
@@ -35,13 +35,14 @@ def initScreen(OS):
 
     if os.path.isfile(config["Wallpaper"]):
         img = Image.open(config["Wallpaper"])
+        img = img.resize((w, h), Image.ANTIALIAS)
         if ".gif" in config["Wallpaper"]:
             Paper = ImageTk.PhotoImage(img, format="gif")
-        img = img.resize((w, h), Image.ANTIALIAS)
-        if img.format != "gif":
+        else:
             Paper = ImageTk.PhotoImage(img)
+            screen.configure(image=Paper)
+        if img.format != "gif":
             screen.create_image(0, 0, anchor=NW, image=Paper)
-    
     else:
         screen.configure(bg=config["Wallpaper"])
         Paper = None
