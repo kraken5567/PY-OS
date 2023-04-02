@@ -3,9 +3,10 @@ def Main(OS):
     import importlib.util
     importlib.reload(FF)
     
-    FF.FFImported(OS)
+    Loc = FF.FFImported(OS)
+    coder(Loc)
     
-def coder(file_text):
+def coder(fileDir):
     import tkinter as T
 
     Coder = T.Toplevel()
@@ -13,7 +14,7 @@ def coder(file_text):
 
     code_vis = T.Text(Coder,height=20,font=8)
     T.Scrollbar(code_vis)
-    file = open(file_text, "r")
+    file = open(fileDir, "r")
     file = file.read()
     lines = file.split("\n")
     for row, line in enumerate(lines):
@@ -28,7 +29,7 @@ def coder(file_text):
 
     def Apply():
         code = code_vis.get("1.0", "end-1c")
-        with open(file_text, "w") as file:
+        with open(fileDir, "w") as file:
             file.write(code)
     apply = T.Button(Coder,text="Save",bg="blue",command=Apply)
     apply.grid(row=2, column=0, padx=10, pady=10, sticky='w')

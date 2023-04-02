@@ -4,6 +4,7 @@ def Main(OS):
     import os
 
     easel = T.Toplevel(OS)
+    easel.transient(OS)
 
     #loads the image to a canvas
     H = 400

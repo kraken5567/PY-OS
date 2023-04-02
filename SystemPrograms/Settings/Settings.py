@@ -6,6 +6,8 @@ def Main(OS):
     import os
 
     Setting_Frame = Toplevel(OS)
+    Setting_Frame.transient(OS)
+
     Fullscreen = BooleanVar()
     
     #Resolution, Wallpaper_Color/Image, and TaskBar_Color are all entries

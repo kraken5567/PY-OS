@@ -5,6 +5,7 @@ def Main(OS):
 
     paper = T.Toplevel(OS)
     paper.title("File Editor")
+    paper.transient(OS)
     paper.columnconfigure(0, weight=1)
     paper.rowconfigure(0, weight=1)
 
@@ -27,6 +28,7 @@ def Main(OS):
         code = code_vis.get("1.0", "end-1c")
         with open(os.path.join(Folder,name.get()),"w") as File:
             File.write(code)
+            paper.destroy()
     apply = T.Button(paper,text="Save",bg="blue",command=Apply)
     apply.grid(row=2, column=0, padx=10, pady=10, sticky='w')
 

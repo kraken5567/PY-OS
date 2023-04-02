@@ -117,7 +117,6 @@ def Main(OS):
 def FFImported(OS):
     import tkinter as T
     import os
-    import importlib.util
 
     selection = T.StringVar()
     global FileManager
