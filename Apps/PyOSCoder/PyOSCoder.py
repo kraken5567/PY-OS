@@ -1,6 +1,7 @@
 def Main(OS):
     import SystemPrograms.FileFinder.FileFinder as FF
     import importlib.util
+    
     importlib.reload(FF)
     
     Loc = FF.FFImported(OS)
@@ -8,9 +9,15 @@ def Main(OS):
     
 def coder(fileDir):
     import tkinter as T
+    from PIL import ImageTk, Image
 
     Coder = T.Toplevel()
     Coder.title("PyOS Coder")
+    ProgDir = "Apps"
+    ProgFolder = "PyOSCoder"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    Coder.iconphoto(False, icon)
+    
 
     code_vis = T.Text(Coder,height=20,font=8)
     T.Scrollbar(code_vis)

@@ -13,13 +13,12 @@ def Main(OS):
     w = int(Res[0])
     h = int(Res[1])
 
-    ProgDir = "Apps"
-    ProgFolder = "AppPacker"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-
     Packer = T.Toplevel(OS,width=w,height=h)
     Packer.transient(OS)
     Packer.title("App Packer")
+    ProgDir = "Apps"
+    ProgFolder = "AppPacker"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
     Packer.iconphoto(False, icon)
 
     canvas = T.Canvas(Packer,bg="white")

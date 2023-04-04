@@ -1,9 +1,15 @@
 def Main(OS):
     import tkinter as T
     import PIL.ImageGrab as ImageGrab
+    from PIL import ImageTk, Image
 
     easel = T.Toplevel(OS)
     easel.transient(OS)
+    easel.title("Paint")
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Painter"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    easel.iconphoto(False, icon)
 
     #loads the image to a canvas
     H = 400
@@ -81,6 +87,12 @@ def redraw(OS,select,Location):
     import PIL.ImageGrab as ImageGrab
 
     easel = T.Toplevel(OS)
+    easel.transient(OS)
+    easel.title("Paint")
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Painter"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    easel.iconphoto(False, icon)
 
     #loads the image to a canvas
     H = 400 

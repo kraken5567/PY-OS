@@ -7,6 +7,12 @@ def Main(OS):
 
     Setting_Frame = Toplevel(OS)
     Setting_Frame.transient(OS)
+    Setting_Frame.title("Settings")
+    from PIL import ImageTk, Image
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Settings"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    Setting_Frame.iconphoto(False, icon)
 
     Fullscreen = BooleanVar()
     

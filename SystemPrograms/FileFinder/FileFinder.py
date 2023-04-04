@@ -2,12 +2,17 @@ def Main(OS):
     import tkinter as T
     import os
     import importlib.util
+    from PIL import ImageTk, Image
 
     selection = T.StringVar()
 
     FileManager = T.Toplevel(OS)
     FileManager.title("File Manager")
     FileManager.transient(OS)
+    ProgDir = "SystemPrograms"
+    ProgFolder = "FileFinder"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    FileManager.iconphoto(False, icon)
 
     # Evil Global
     global Location
@@ -126,12 +131,17 @@ def Main(OS):
 def FFImported(OS):
     import tkinter as T
     import os
+    from PIL import ImageTk, Image
 
     selection = T.StringVar()
     global FileManager
     FileManager = T.Toplevel(OS)
     FileManager.title("File Manager")
     FileManager.transient(OS)
+    ProgDir = "SystemPrograms"
+    ProgFolder = "FileFinder"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    FileManager.iconphoto(False, icon)
 
     # Evil Global
     global Location
