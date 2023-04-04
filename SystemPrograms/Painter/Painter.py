@@ -16,11 +16,8 @@ def Main(OS):
     brush_size = 1
     global brush_color
     brush_color = (0, 0, 0)
-
     global color_hex
     color_hex = '#FFFFFF'
-    
-    Location = "paint"
 
     #rgb inputs
     global red, green, blue
