@@ -18,6 +18,11 @@ def initOS():
         elif Config["Fullscreen"] == True:
             OS.geometry(str(OS.winfo_screenwidth()) + "x" + str(OS.winfo_screenheight()))
         OS.update()
+
+        ProgFolder = "PyOSV1.0"
+        icon = ImageTk.PhotoImage(Image.open(f"{ProgFolder}.png"))
+        OS.iconphoto(False, icon)
+
         return OS
 
 def initScreen(OS):

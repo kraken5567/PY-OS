@@ -2,10 +2,17 @@ def Main(OS):
     import tkinter as T
     import os
     import importlib.util
+    from PIL import ImageTk, Image
 
     paper = T.Toplevel(OS)
-    paper.title("File Editor")
+    paper.title("Notepad")
     paper.transient(OS)
+    
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Noterer"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    paper.iconphoto(False, icon)
+
     paper.columnconfigure(0, weight=1)
     paper.rowconfigure(0, weight=1)
 
@@ -41,9 +48,15 @@ def Main(OS):
 def ReadEdit(OS,select,Location):
     import tkinter as T
     import os
+    from PIL import ImageTk, Image
 
     paper = T.Toplevel(OS)
-    paper.title("File Editor")
+    paper.title("NotePad")
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Noterer"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    paper.iconphoto(False, icon)
+    
     paper.columnconfigure(0, weight=1)
     paper.rowconfigure(0, weight=1)
 

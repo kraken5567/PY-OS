@@ -1,9 +1,15 @@
 def Main(OS):
     import tkinter as T
     import PIL.ImageGrab as ImageGrab
+    from PIL import ImageTk, Image
 
     easel = T.Toplevel(OS)
     easel.transient(OS)
+    easel.title("Paint")
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Painter"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    easel.iconphoto(False, icon)
 
     #loads the image to a canvas
     H = 400
@@ -16,11 +22,8 @@ def Main(OS):
     brush_size = 1
     global brush_color
     brush_color = (0, 0, 0)
-
     global color_hex
     color_hex = '#FFFFFF'
-    
-    Location = "paint"
 
     #rgb inputs
     global red, green, blue
@@ -84,6 +87,12 @@ def redraw(OS,select,Location):
     import PIL.ImageGrab as ImageGrab
 
     easel = T.Toplevel(OS)
+    easel.transient(OS)
+    easel.title("Paint")
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Painter"
+    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    easel.iconphoto(False, icon)
 
     #loads the image to a canvas
     H = 400 
