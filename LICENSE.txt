@@ -18,7 +18,7 @@ You might:
 - have your Github Forks implemented and will..
  - lose rights to that code and given credit (OR might be added to team if it happens to you frequently)
 
-V1.0 restrictions:
+V1.x restrictions:
 - None
 
 -----------------------------
