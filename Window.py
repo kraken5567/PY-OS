@@ -173,10 +173,12 @@ def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
     reloader_reg = []
     imgFile = "Reloader.png"
 
+    IconH = h-(((Size/8)+Size))
+
     image = Image.open(imgFile).resize((Size, Size))
     icon = ImageTk.PhotoImage(image)
 
-    img_tag = screen.create_image(w-Size, h-((5*Size)/4), image=icon, anchor=NW)
+    img_tag = screen.create_image(w-Size, IconH, image=icon, anchor=NW)
     rload = screen.tag_bind(img_tag, "<Double-Button-1>",lambda event: Reload(OS,screen,programbar))
 
     reloader_reg.append(icon)
