@@ -4,7 +4,6 @@ def Main(OS):
     import tkinter as T
     import json as J
     import os
-    import math
 
     with open("Sys_Config.json","r") as C:
         Config = J.load(C)
@@ -14,8 +13,8 @@ def Main(OS):
     w = int(Res[0])
     h = int(Res[1])
 
-    d = T.IntVar(value=128)
-    imageres = T.IntVar(value=16)
+    d = T.IntVar(value=512)
+    imageres = T.IntVar(value=32)
     brush_size = d.get()//imageres.get()
 
     color_hex = T.StringVar(value='#FFFFFF')
@@ -30,25 +29,22 @@ def Main(OS):
     Packer.iconphoto(False, icon)
 
     canvas = T.Canvas(Packer,bg="white",height=d.get(),width=d.get())
-    canvas.grid(row=0,column=0,sticky="nw")
 
     coder = T.Text(Packer, bg="light gray", width=100)
-    coder.grid(row=0,column=1,rowspan=5,sticky="ns")
+    
     coder.insert("1.0","def Main(OS): \n import tkinter as T \n from PIL import ImageTk, Image \n App = T.Toplevel(OS) \n App.transient(OS) \n App.title('Packed App') \n ProgDir = 'Apps' \n ProgFolder = #put app name here \n icon = ImageTk.PhotoImage(Image.open(f'{ProgDir}\\{ProgFolder}\\{ProgFolder}.png')) \n App.iconphoto(False, icon)")
 
     icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
 
     ProgName = T.Entry(Packer,bg="light gray")
-    ProgName.grid(row=6,column=0,columnspan=1,sticky="we")
+    
     ProgName.insert(0,"App")
 
     Error = T.Label(Packer,fg="red",bg="black",textvariable=message)
-    Error.grid(row=1000,columnspan=3,sticky='we')
 
     #brush settings
     global brush_color
     brush_color = (0, 0, 0) 
-    #rgb inputs
     red = T.Entry(Packer,bg="red")
     red.insert(0,0)
     green = T.Entry(Packer,bg="green")
@@ -56,23 +52,34 @@ def Main(OS):
     blue = T.Entry(Packer,bg="blue")
     blue.insert(0,0)
 
-    def change_settings():
+    redSlider = T.Scale(Packer,bg="red",from_=0, to=255, orient=T.HORIZONTAL)
+    greenSlider = T.Scale(Packer,bg="green",from_=0, to=255, orient=T.HORIZONTAL)
+    blueSlider = T.Scale(Packer,bg="blue",from_=0, to=255, orient=T.HORIZONTAL)
+
+    def change_settings(a):
         global brush_color
-        r_val = int(red.get())
-        g_val = int(green.get())
-        b_val = int(blue.get())
+        if a:
+            r_val = int(red.get())
+            g_val = int(green.get())
+            b_val = int(blue.get())
+            color_E_button.configure(bg = f'#{r_val:02x}{g_val:02x}{b_val:02x}')
+        else:
+            r_val = int(redSlider.get())
+            g_val = int(greenSlider.get())
+            b_val = int(blueSlider.get())
+            color_S_button.configure(bg = f'#{r_val:02x}{g_val:02x}{b_val:02x}')
         brush_color = (r_val, g_val, b_val)
         
-    def paint(event,red,green,blue):
+    def paint(event):
+        global brush_color, color_hex
         x, y = event.x, event.y
         row, col = x // brush_size, y // brush_size
         x1, y1 = row * brush_size, col * brush_size
         x2, y2 = x1 + brush_size, y1 + brush_size
-        (red, green, blue) = brush_color
-        global color_hex
+        red, green, blue = brush_color
         color_hex = f'#{red:02x}{green:02x}{blue:02x}'  #RGB to Hex
         canvas.create_rectangle(x1, y1, x2, y2, fill=color_hex, outline=color_hex)
-    canvas.bind('<B1-Motion>', lambda event: paint(event,red.get(),green.get(),blue.get()))
+    canvas.bind('<B1-Motion>', lambda event: paint(event))
 
     def save():
         x = Packer.winfo_rootx() + canvas.winfo_x()
@@ -93,11 +100,24 @@ def Main(OS):
         message.set("[Info]: Saved "+str(ProgName.get())+"!")
 
     # command buttons
-    color_button = T.Button(Packer, text='Change Settings', command=change_settings, bg=color_hex.get())
+    color_E_button = T.Button(Packer, text='Change Color (Entry)', command= lambda: change_settings(True))
+    color_S_button = T.Button(Packer, text='Change Color (Sliders)', command= lambda: change_settings(False))
     saver = T.Button(Packer,text="Save",command=save)
+
+    # gridding
+    canvas.grid(row=0,column=0,columnspan=2,sticky="nw")
+    coder.grid(row=0,column=2,rowspan=5,sticky="ns")
+    ProgName.grid(row=6,column=0,columnspan=1,sticky="we")
+    Error.grid(row=1000,columnspan=3,sticky='we')
 
     red.grid(row=2,column=0)
     green.grid(row=3,column=0)
     blue.grid(row=4,column=0)
-    color_button.grid(row=5,column=0,sticky='we')
+
+    redSlider.grid(row=2,column=1)
+    greenSlider.grid(row=3,column=1)
+    blueSlider.grid(row=4,column=1)
+
+    color_E_button.grid(row=5,column=0,sticky='we')
+    color_S_button.grid(row=5,column=1,sticky='we')
     saver.grid(row=6,column=1,sticky='we')
