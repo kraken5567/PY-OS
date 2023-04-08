@@ -26,13 +26,17 @@ def Main(OS):
     color_hex = '#FFFFFF'
 
     #rgb inputs
-    global red, green, blue
-    red = T.Entry(easel,bg="red")
-    red.insert(0,0)
-    green = T.Entry(easel,bg="green")
-    green.insert(0,0)
-    blue = T.Entry(easel,bg="blue")
-    blue.insert(0,0)
+    global redEntry, greenEntry, blueEntry
+    redEntry = T.Entry(easel,bg="red")
+    redEntry.insert(0,0)
+    greenEntry = T.Entry(easel,bg="green")
+    greenEntry.insert(0,0)
+    blueEntry = T.Entry(easel,bg="blue")
+    blueEntry.insert(0,0)
+
+    redSlider = T.Scale(easel,bg="red",from_=0, to=255, orient=T.HORIZONTAL)
+    greenSlider = T.Scale(easel,bg="green",from_=0, to=255, orient=T.HORIZONTAL)
+    blueSlider = T.Scale(easel,bg="blue",from_=0, to=255, orient=T.HORIZONTAL)
 
     name = T.Entry(easel)
 
@@ -51,10 +55,10 @@ def Main(OS):
 
     #functions
     def change_color():
-        global red, green, blue, brush_color
-        r_val = int(red.get())
-        g_val = int(green.get())
-        b_val = int(blue.get())
+        global brush_color
+        r_val = int(redSlider.get())
+        g_val = int(greenSlider.get())
+        b_val = int(blueSlider.get())
         brush_color = (r_val, g_val, b_val)
 
 
