@@ -4,16 +4,19 @@ from PIL import ImageTk, Image
 import tkinter as T
 
 class Cards:
-    
+
+    def __init__(self):
+        None
+
     #creates "Hand" which contains cards (letters and numbers)
-    def initHand(self,cards):
+    def initcards(self,cards):
         Hand = []
         for startingCards in range(2):
             Hand.append(random.choice(cards))
         return Hand
     
     #list of the values of the cards in "Hand"
-    def getValue(self,Hand,):
+    def getValue(self,Hand):
         value_list = []
         for Card in Hand:
             if (Card in "AJKQ"):
@@ -28,7 +31,8 @@ class Cards:
 
     #retruns string as, num + num... OR num + ... + ?
     def label(self,value_list,Bool):
-        if Bool != False:
+        n = 1
+        if Bool == True:
             string = "Dealer's Hand: "
             for x in value_list:
                 if n < len(value_list):
@@ -36,7 +40,7 @@ class Cards:
                 else:
                     string += "?"
                 n += 1
-        elif Bool != True:
+        elif Bool == False:
             string = "Player's Hand: "
             for x in value_list:
                 if n < len(value_list):
@@ -58,15 +62,26 @@ class Cards:
                 imgHolder.append(cardImg)
         return imgHolder
     
-class Canvas:
+class Player:
 
-    #takes list of Images
-    def createImages(canvas,Images):
-        cardWidth = 128
-        createdImages = []
-        for n, card in enumerate(Images):
-            x = n * cardWidth
-            img_tag = canvas.create_image(x, 0, image=Images[n], anchor=T.NW)
-            createdImages.append(img_tag)
-        return createdImages
+    #call with: (card list) and (Dealer/Player as True/False) and (Card's Directory)
+    def __init__(self,cards,Bool,cardDir):
+        self.Object = Cards()
+        self.cards = self.Object.initcards(cards)
+        self.value = self.Object.getValue(self.cards)
+        self.label = self.Object.label(self.value,Bool)
+        self.images = self.Object.cardImager(self.cards,cardDir)
+    
+    #returns card object
+    def getCardObject(self):
+        return self.Object
+
+    #adds a card
+    def addCard(self,cards):
+        (self.cards).append(random.choice(cards))
+        return self.cards
+
+    #returns a list of Card(list of str), Card values(list of int), label(str), images(PIL object)
+    def Return(self):
+        return self.cards, self.value, self.label, self.images
         
