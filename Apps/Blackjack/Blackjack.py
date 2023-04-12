@@ -67,7 +67,6 @@ def Main(OS):
                     img_tag = shelf.create_image(x, height, image=cardImg, anchor=T.NW)
 
     def initbuttons(P):
-        global imgHolder
         global hit,stand,bet,scoreLabel,resultLabel
         hit = T.Button(table,text="Hit",bg=color.get(), command= lambda: hitButtonClicked(P))
         stand = T.Button(table,text="Stand",bg=color.get(), command= lambda: Stand(P))
@@ -106,6 +105,9 @@ def Main(OS):
         #print(dealer.value,player.value)
         #print(((dealer.value > 21) and (player.value <= 21)) or (player.value > dealer.value))
         #print(((player.value > 21) and (dealer.value <= 21)) or (dealer.value > player.value))
+
+        #fix Tie logic
+
         if ((dealer.value > 21) and (player.value <= 21)) or (player.value > dealer.value):
             result = "Player Wins!"
             player_score.set(player_score.get() + bet.get())
@@ -126,7 +128,6 @@ def Main(OS):
         initGame()
 
     def hitButtonClicked(players):
-        global imgHolder
         player = players[1]
 
         player.addCard(cards)
@@ -144,11 +145,6 @@ def Main(OS):
             Stand(players)
     
     def updateDisplay(players):
-
-        #fix blank going away!
-
-        global imgHolder
-        imgHolder = [] #used just for blank
         cardWidth = 128
         try:
             for j, object in enumerate(players):
