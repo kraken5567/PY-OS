@@ -23,11 +23,22 @@ class Cards:
                 if Card in "JKQ":
                     value = 10
                 elif Card in "A":
-                    value = [1,11]
+                    value = [11,1]
             else:
                 value = int(Card)
             value_list.append(value)
-        return value_list
+        if value_list != int:
+            value = 0
+            for val in value_list:
+                if type(val) != int:
+                    for num in val:
+                        if value + num <= 21:
+                            value += num
+                            break
+                else:
+                    value += val
+
+        return value, value_list
 
     #retruns string as, num + num... OR num + ... + ?
     def label(self,value_list,Bool):
@@ -68,8 +79,8 @@ class Player:
     def __init__(self,cards,Bool,cardDir):
         self.Object = Cards()
         self.cards = self.Object.initcards(cards)
-        self.value = self.Object.getValue(self.cards)
-        self.label = self.Object.label(self.value,Bool)
+        [self.value, self.value_list] = self.Object.getValue(self.cards)
+        self.label = self.Object.label(self.value_list,Bool)
         self.images = self.Object.cardImager(self.cards,cardDir)
     
     #returns card object
@@ -81,7 +92,7 @@ class Player:
         (self.cards).append(random.choice(cards))
         return self.cards
 
-    #returns a list of Card(list of str), Card values(list of int), label(str), images(PIL object)
+    #returns a list of Card(list of str), [total card value, Card values(list of int)], label(str), images(PIL object)
     def Return(self):
-        return self.cards, self.value, self.label, self.images
+        return self.cards, [self.value,self.value_list], self.label, self.images
         
