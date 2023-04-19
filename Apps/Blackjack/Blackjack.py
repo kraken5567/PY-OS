@@ -33,6 +33,11 @@ def Main(OS):
 
     right_most = T.IntVar()
 
+    resultLabel = T.Label(table)
+    resultLabel.grid(row=5,columnspan=20)
+    scoreLabel = T.Label(table)
+    scoreLabel.grid(row=4,column=3, columnspan=17)
+
     def initGame():
         global shelf
         shelf = T.Canvas(table,bg=color.get(),scrollregion=(0, 0, 2000, 256))
@@ -67,21 +72,20 @@ def Main(OS):
                     img_tag = shelf.create_image(x, height, image=cardImg, anchor=T.NW)
 
     def initbuttons(P):
-        global hit,stand,bet,scoreLabel,resultLabel
+        global hit, stand, bet
         hit = T.Button(table,text="Hit",bg=color.get(), command= lambda: hitButtonClicked(P))
         stand = T.Button(table,text="Stand",bg=color.get(), command= lambda: Stand(P))
         bet = T.Scale(table,bg=color.get(),from_=1, to=50, orient=T.HORIZONTAL)
-        scoreLabel = T.Label(table,text=f"Score: {player_score.get()}",bg=color.get())
-        resultLabel = T.Label(table,text="",bg=color.get())
+        scoreLabel.config(text=f"Score: {player_score.get()}",bg=color.get())
+        resultLabel.config(text="",bg=color.get())
 
         hit.grid(row=4,column=0)
         stand.grid(row=4,column=1)
         bet.grid(row=4,column=2)
-        scoreLabel.grid(row=4,column=3, columnspan=17)
-        resultLabel.grid(row=5,columnspan=20) 
     
     def Stand(players):
         global imgHolder
+
         del imgHolder
         table.update()
 
@@ -91,40 +95,44 @@ def Main(OS):
         playerCard = player.getCardObject()
         player.value,player.value_list = playerCard.getValue(player.cards)
 
-        while dealer.value <= player.value: #fix logic
+        while dealer.value <= player.value:
             dealer.addCard(cards)
             dealer.value,dealer.value_list = dealerCard.getValue(dealer.cards)
 
         updateDisplay(players)
-        table.update()
+        
 
         # buttons
         hit.config(state=T.DISABLED)
         stand.config(state=T.DISABLED)
 
-        #print(dealer.value,player.value)
-        #print(((dealer.value > 21) and (player.value <= 21)) or (player.value > dealer.value))
-        #print(((player.value > 21) and (dealer.value <= 21)) or (dealer.value > player.value))
-
-        #fix Tie logic
-
         if ((dealer.value > 21) and (player.value <= 21)) or (player.value > dealer.value):
             result = "Player Wins!"
             player_score.set(player_score.get() + bet.get())
-        elif ((player.value > 21) and (dealer.value <= 21)) or (dealer.value > player.value):
-            result = "Dealer Wins!"
-            player_score.set(player_score.get() - bet.get())
-        else:
+
+        if ((player.value > 21) and (dealer.value > 21)):
             result = "Draw!"
+
+        if ((player.value > 21) and (dealer.value <= 21)) or (dealer.value > player.value):
+            if ((player.value > 21) and (dealer.value > 21)):
+                result = "Draw!"
+            elif (dealer.value <= 21):
+                result = "Dealer Wins!"
+                player_score.set(player_score.get() - bet.get())
+
+        result += f" | Player: {player.value}, Dealer:{dealer.value}"
 
         # display result and update score
         resultLabel.config(text=result)
         scoreLabel.config(text=f"Score: {player_score.get()}")
 
+        table.update()
+
         players = None
 
         table.after(1500,print("restarting!"))
         shelf.destroy()
+
         initGame()
 
     def hitButtonClicked(players):
