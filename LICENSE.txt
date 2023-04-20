@@ -1,5 +1,5 @@
 Licensing Agreement
-Copyright (c) March, 2023 kraken5567
+Copyright (c) April, 2023 kraken5567
 
 You can:
 - sell custom made code for OS
@@ -15,7 +15,7 @@ You MUST NOT:
 - cause intentional harm in any way
 
 You might:
-- have your Github Forks implemented and will..
+- have your GitHub Forks implemented and will..
  - lose rights to that code and given credit (OR might be added to team if it happens to you frequently)
 
 V1.x restrictions:
@@ -34,11 +34,11 @@ use this code at your own risk!
 
 punishments:
 - loss of app coding
-- loss of acess
+- loss of access
 - misc. restrictions
 
 -----------------------------
 Don't let any of this scare you
 from coding/messing around. 
 I don't care unless it becomes 
-and issue that MUST be addressed.
+an issue that MUST be addressed.
