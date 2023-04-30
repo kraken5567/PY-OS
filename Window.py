@@ -45,8 +45,6 @@ def initScreen(OS):
             Paper = ImageTk.PhotoImage(img, format="gif")
         else:
             Paper = ImageTk.PhotoImage(img)
-            screen.configure(image=Paper)
-        if img.format != "gif":
             screen.create_image(0, 0, anchor=NW, image=Paper)
     else:
         screen.configure(bg=config["Wallpaper"])
