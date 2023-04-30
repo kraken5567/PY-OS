@@ -95,18 +95,17 @@ def Main(OS):
         playerCard = player.getCardObject()
         player.value,player.value_list = playerCard.getValue(player.cards)
 
-        while dealer.value <= player.value:
+        while (dealer.value <= player.value) and not ((player.value >= 21) or (dealer.value > 21)):
             dealer.addCard(cards)
             dealer.value,dealer.value_list = dealerCard.getValue(dealer.cards)
 
         updateDisplay(players)
-        
 
         # buttons
         hit.config(state=T.DISABLED)
         stand.config(state=T.DISABLED)
 
-        if ((dealer.value > 21) and (player.value <= 21)) or (player.value > dealer.value):
+        if ((dealer.value > 21) and (player.value <= 21)) or ((player.value > dealer.value) and (player.value <= 21)):
             result = "Player Wins!"
             player_score.set(player_score.get() + bet.get())
 
@@ -130,8 +129,7 @@ def Main(OS):
 
         players = None
 
-        table.after(1500,print("restarting!"))
-        shelf.destroy()
+        table.after(1500,shelf.destroy())
 
         initGame()
 
@@ -149,7 +147,7 @@ def Main(OS):
 
         updateDisplay(players)
 
-        if player.value > 21:
+        if player.value >= 21:
             Stand(players)
     
     def updateDisplay(players):
@@ -160,7 +158,10 @@ def Main(OS):
                 for i, image in enumerate(images):
                     height = j * cardWidth
                     x = i * cardWidth
-                    img_tag = shelf.create_image(x, height, image=image, anchor=T.NW)
+                    try:
+                        img_tag = shelf.create_image(x, height, image=image, anchor=T.NW)
+                    except:
+                        img_tag = shelf.create_image(x, height, image=image[1], anchor=T.NW)
             right_most.set(shelf.bbox("all")[2])
             shelf.config(scrollregion=(0, 0, right_most.get(), 256))
         except TypeError:

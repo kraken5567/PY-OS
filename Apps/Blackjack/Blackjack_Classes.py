@@ -19,6 +19,32 @@ class Cards:
     def getValue(self,Hand):
         value_list = []
         for Card in Hand:
+            if Card in "AJKQ":
+                if Card in "JKQ":
+                    value = 10
+                elif Card == "A":
+                    value = [11, 1]
+            else:
+                value = int(Card)
+            value_list.append(value)
+
+        # Handle aces
+        if any(isinstance(val, list) for val in value_list):
+            value = 0
+            for val in value_list:
+                if isinstance(val, list):
+                    if value + val[0] <= 21:
+                        value += val[0]
+                    else:
+                        value += val[1]
+                else:
+                    value += val
+        else:
+            value = sum(value_list)
+
+        return value, value_list
+        """ value_list = []
+        for Card in Hand:
             if (Card in "AJKQ"):
                 if Card in "JKQ":
                     value = 10
@@ -27,18 +53,17 @@ class Cards:
             else:
                 value = int(Card)
             value_list.append(value)
-        if value_list != int:
-            value = 0
-            for val in value_list:
-                if type(val) != int:
-                    for num in val:
-                        if value + num <= 21:
-                            value += num
-                            break
-                else:
-                    value += val
+        value = 0
+        for val in value_list:
+            if type(val) != int:
+                for num in val:
+                    if value + num <= 21:
+                        value += num
+                        break
+            else:
+                value += val
 
-        return value, value_list
+        return value, value_list """
 
     #retruns string as, num + num... OR num + ... + ?
     def label(self,value_list,Bool):
@@ -66,11 +91,22 @@ class Cards:
         imgHolder = []
         cardWidth = 128
         for i, card in enumerate(Hand):
-                imgDir = random.choice(os.listdir(f'{cardDir}\\{card}'))
-                image = Image.open(f"{cardDir}\\{card}\\{imgDir}")
-                image = image.resize((cardWidth, cardWidth))
-                cardImg = ImageTk.PhotoImage(image)
-                imgHolder.append(cardImg)
+                try:
+                    imgDir = random.choice(os.listdir(f'{cardDir}\\{card}'))
+                    image = Image.open(f"{cardDir}\\{card}\\{imgDir}")
+                    image = image.resize((cardWidth, cardWidth))
+                    cardImg = ImageTk.PhotoImage(image)
+                    imgHolder.append(cardImg)
+                except FileNotFoundError:
+                    if type(Hand) == list:
+                        imgDir = random.choice(os.listdir(f'{cardDir}\\{Hand[i]}'))
+                        image = Image.open(f"{cardDir}\\{card}\\{imgDir}")
+                    else: 
+                        imgDir = random.choice(os.listdir(f'{cardDir}\\{Hand}'))
+                        image = Image.open(f"{cardDir}\\{Hand}\\{imgDir}")
+                    image = image.resize((cardWidth, cardWidth))
+                    cardImg = ImageTk.PhotoImage(image)
+                    imgHolder.append(cardImg)
         return imgHolder
     
 class Player:
