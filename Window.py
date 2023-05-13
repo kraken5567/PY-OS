@@ -4,6 +4,7 @@ from PIL import Image, ImageTk, ImageSequence
 import json
 
 from RunHandler import *
+from MultiProcessRenderClass import Gif
 
 def initOS():
     OS = Tk()
@@ -38,19 +39,16 @@ def initScreen(OS):
 
     screen = Canvas(OS, width=w, height=h)
 
-    if os.path.isfile(config["Wallpaper"]):
+    screen.pack()
+
+    if ".gif" in config["Wallpaper"]:
+        Paper = Gif(screen, config["Wallpaper"])
+        
+    else:
         img = Image.open(config["Wallpaper"])
         img = img.resize((w, h), Image.ANTIALIAS)
-        if ".gif" in config["Wallpaper"]:
-            Paper = ImageTk.PhotoImage(img, format="gif")
-        else:
-            Paper = ImageTk.PhotoImage(img)
+        Paper = ImageTk.PhotoImage(img)
         screen.create_image(0, 0, anchor=NW, image=Paper)
-    else:
-        screen.configure(bg=config["Wallpaper"])
-        Paper = None
-    
-    screen.pack()
 
     programbar = screen.create_rectangle(0, h-80, w, h, fill=config["Taskbar_Color"])
 
@@ -183,3 +181,9 @@ def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
     reloader_reg.append(rload)
 
     return reloader_reg
+
+def UpdateOSDisplay(OS, wallpaper):
+    OS.update()
+    screen = OS.winfo_children()[0]
+    wallpaper.update()
+    screen.update()

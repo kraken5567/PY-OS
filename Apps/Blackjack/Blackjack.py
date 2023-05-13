@@ -73,9 +73,10 @@ def Main(OS):
 
     def initbuttons(P):
         global hit, stand, bet
-        hit = T.Button(table,text="Hit",bg=color.get(), command= lambda: hitButtonClicked(P))
-        stand = T.Button(table,text="Stand",bg=color.get(), command= lambda: Stand(P))
         bet = T.Scale(table,bg=color.get(),from_=1, to=50, orient=T.HORIZONTAL)
+        hit = T.Button(table,text="Hit",bg=color.get(), command= lambda: hitButtonClicked(P, bet))
+        stand = T.Button(table,text="Stand",bg=color.get(), command= lambda: Stand(P))
+        
         scoreLabel.config(text=f"Score: {player_score.get()}",bg=color.get())
         resultLabel.config(text="",bg=color.get())
 
@@ -133,7 +134,10 @@ def Main(OS):
 
         initGame()
 
-    def hitButtonClicked(players):
+    def hitButtonClicked(players, bet):
+
+        bet.config(state=T.DISABLED)
+
         player = players[1]
 
         player.addCard(cards)
