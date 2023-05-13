@@ -44,11 +44,14 @@ def initScreen(OS):
     if ".gif" in config["Wallpaper"]:
         Paper = Gif(screen, config["Wallpaper"])
         
-    else:
+    elif "." in config["Wallpaper"]:
         img = Image.open(config["Wallpaper"])
         img = img.resize((w, h), Image.ANTIALIAS)
         Paper = ImageTk.PhotoImage(img)
         screen.create_image(0, 0, anchor=NW, image=Paper)
+    else:
+        screen.config(bg=config["Wallpaper"])
+        Paper = None
 
     programbar = screen.create_rectangle(0, h-80, w, h, fill=config["Taskbar_Color"])
 
@@ -183,7 +186,11 @@ def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
     return reloader_reg
 
 def UpdateOSDisplay(OS, wallpaper):
-    OS.update()
-    screen = OS.winfo_children()[0]
-    wallpaper.update()
-    screen.update()
+    try:    
+        wallpaper.load_gif()
+        OS.update()
+        screen = OS.winfo_children()[0]
+        wallpaper.update()
+        screen.update()
+    except AttributeError:
+        OS.update()

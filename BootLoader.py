@@ -9,9 +9,12 @@ def Boot(OS):
     app_reg = initApps(OS, screen, core_iconinfo[0], core_iconinfo[1])
     reloader_reg = initReloader(OS, screen, programbar, core_iconinfo, sys_reg, app_reg)
 
-    wallpaper.load_gif()
     while OS != None:
         UpdateOSDisplay(OS, wallpaper)
+
+    #fix gif
+    # - Goes away on reload
+    # - Freezes when App/Prog is opened
 
 OS = initOS()
 Boot(OS)
