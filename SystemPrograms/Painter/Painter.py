@@ -68,6 +68,12 @@ def Main(OS):
     image_width = 32
     image_height = 32
 
+    #insert values
+    display_height_entry.insert(0,f"{display_height}")
+    display_width_entry.insert(0,f"{display_width}")
+    image_height_entry.insert(0,f"{image_height}")
+    image_width_entry.insert(0,f"{image_width}")
+
     canvas = T.Canvas(easel, bg="white", width=display_width, height=display_height)
     canvas.grid(row=5, column=0, columnspan=2)
 
