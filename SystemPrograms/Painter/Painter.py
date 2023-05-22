@@ -155,78 +155,123 @@ def redraw(OS,select,Location):
     icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
     easel.iconphoto(False, icon)
 
-    #loads the image to a canvas
-    H = 400 
-    W = 400
-    image = Image.open(f"{Location}\\{select}")
-    if (image.width,image.height) < (W,H):
-        dW = math.trunc(W/image.width)
-        dH = math.trunc(H/image.height)
-        image = image.resize((image.width*dW,image.height*dH))
-    photo = ImageTk.PhotoImage(image)
-    canvas = T.Canvas(easel, bg="white", width=image.width, height=image.height)
-    canvas.create_image(0, 0, anchor=T.NW, image=photo)
-    canvas.pack()
+    # Initialize canvas
+    image_width = 256
+    image_height = 256
 
-    #brush settings
+    # Load and resize the image
+    image = Image.open(f"{Location}\\{select}")
+    image = image.resize((image_width, image_height))
+    photo = ImageTk.PhotoImage(image)
+
+    canvas = T.Canvas(easel, width=image_width, height=image_height)
+    canvas.create_image(0, 0, anchor=T.NW, image=photo)
+
+    def create_canvas():
+        nonlocal image_width, image_height
+        image = Image.open(f"{Location}\\{select}")
+        photo = ImageTk.PhotoImage(image)
+        canvas.configure(width=image_width, height=image_height)
+        canvas.create_image(0, 0, anchor=T.NW, image=photo)
+    
+    def paint(event, image_width, image_height, brush_size):
+        x, y = event.x, event.y
+        scale_x = image_width / canvas.winfo_width()
+        scale_y = image_height / canvas.winfo_height()
+        x1 = (x - brush_size / 2) * scale_x
+        y1 = (y - brush_size / 2) * scale_y
+        x2 = (x + brush_size / 2) * scale_x
+        y2 = (y + brush_size / 2) * scale_y
+        red, green, blue = brush_color
+        color_hex = f'#{red:02x}{green:02x}{blue:02x}'  # RGB to Hex
+        canvas.create_rectangle(x1, y1, x2, y2, fill=color_hex, outline=color_hex)
+
+    canvas.bind('<B1-Motion>', lambda event: paint(event, image.width, image.height, brush_size))
+
+    # Prompt for image resolution
+    image_prompt = T.Label(easel, text="Enter the image resolution:")
+    image_prompt.grid(row=2, column=0, columnspan=2)
+
+    image_width_entry = T.Entry(easel)
+    image_width_entry.grid(row=3, column=0)
+
+    image_height_entry = T.Entry(easel)
+    image_height_entry.grid(row=3, column=1)
+
+    # Apply button
+    apply_button = T.Button(easel, text="Apply", command=create_canvas)
+    apply_button.grid(row=4, column=2, sticky="ns")
+
+    #insert values
+    image_height_entry.insert(0,f"{image_height}")
+    image_width_entry.insert(0,f"{image_width}")
+
+    canvas.grid(row=5, column=0, columnspan=2)
+
+    # Brush settings
     global brush_color
-    brush_size = math.trunc(dH/dW)
+    brush_size = (image_height//image.height) // (image_width//image.width)
     brush_color = (0, 0, 0)
 
-    global color_hex
-    color_hex = '#FFFFFF'
+    def change_settings(a):
+        global brush_color
+        if a:
+            r_val = int(red.get())
+            g_val = int(green.get())
+            b_val = int(blue.get())
+            color_E_button.configure(bg=f'#{r_val:02x}{g_val:02x}{b_val:02x}')
+        else:
+            r_val = int(redSlider.get())
+            g_val = int(greenSlider.get())
+            b_val = int(blueSlider.get())
+            color_S_button.configure(bg=f'#{r_val:02x}{g_val:02x}{b_val:02x}')
+        brush_color = (r_val, g_val, b_val)
 
-    #rgb inputs
-    global red, green, blue
-    red = T.Entry(easel,bg="red")
-    red.insert(0,0)
-    green = T.Entry(easel,bg="green")
-    green.insert(0,0)
-    blue = T.Entry(easel,bg="blue")
-    blue.insert(0,0)
+    # RGB inputs
+    red = T.Entry(easel, bg="red")
+    red.insert(0, 0)
+    red.grid(row=6, column=0)
 
-    name = T.Entry(easel)
+    green = T.Entry(easel, bg="green")
+    green.insert(0, 0)
+    green.grid(row=7, column=0)
+
+    blue = T.Entry(easel, bg="blue")
+    blue.insert(0, 0)
+    blue.grid(row=8, column=0)
+
+    redSlider = T.Scale(easel, bg="red", from_=0, to=255, orient=T.HORIZONTAL)
+    redSlider.grid(row=6, column=1)
+
+    greenSlider = T.Scale(easel, bg="green", from_=0, to=255, orient=T.HORIZONTAL)
+    greenSlider.grid(row=7, column=1)
+
+    blueSlider = T.Scale(easel, bg="blue", from_=0, to=255, orient=T.HORIZONTAL)
+    blueSlider.grid(row=8, column=1)
+
+    color_E_button = T.Button(easel, text='Change Color (Entry)', command=lambda: change_settings(True))
+    color_E_button.grid(row=9, column=0, sticky='we')
+
+    color_S_button = T.Button(easel, text='Change Color (Sliders)', command=lambda: change_settings(False))
+    color_S_button.grid(row=9, column=1, sticky='we')
 
     def save_canvas():
         x = easel.winfo_rootx() + canvas.winfo_x()
         y = easel.winfo_rooty() + canvas.winfo_y()
         width = canvas.winfo_width()
         height = canvas.winfo_height()
-        image = ImageGrab.grab(bbox=(x, y, x+width, y+height))
-        import SystemPrograms.FileFinder.FileFinder as FF
+        image = ImageGrab.grab(bbox=(x, y, x + width, y + height))
+
         Location = FF.FFImported(OS)
         if "." in Location[-4:]:
             image.save(f'{Location}')
         elif "." not in Location[-4:]:
             image.save(f'{Location}\\{name.get()}.png')
 
-    #functions
-    def change_color():
-        global red, green, blue, brush_color
-        r_val = int(red.get())
-        g_val = int(green.get())
-        b_val = int(blue.get())
-        brush_color = (r_val, g_val, b_val)
+    name = T.Entry(easel)
+    name.grid(row=10, column=0)
 
-
-    def paint(event):
-        x, y = event.x, event.y
-        red, green, blue = brush_color
-        global color_hex
-        color_hex = f'#{red:02x}{green:02x}{blue:02x}'  #RGB to Hex
-        canvas.create_rectangle(x, y, x+brush_size, y+brush_size, fill=color_hex, outline=color_hex)
-
-    canvas.bind('<B1-Motion>', paint)
-
-    # color button
-    color_button = T.Button(easel, text='Change Color', command=change_color, bg=color_hex)
-    save_button = T.Button(easel, text='Save', command=save_canvas, bg="blue")
-
-    red.pack()
-    green.pack()
-    blue.pack()
-    color_button.pack()
-    name.pack()
-    save_button.pack()
+    saver = T.Button(easel, text="Save", command=save_canvas)
+    saver.grid(row=10, column=1, sticky='we')
 
     easel.mainloop()
