@@ -1,5 +1,10 @@
 import importlib.util
 import sys
+import threading #try to use
+import json
+
+from MultiProcessRenderClass import Gif
+from PIL import Image, ImageTk, ImageSequence
 
 def Run(event, OS, File):
     # Parse the module path from the File argument
@@ -12,7 +17,6 @@ def Run(event, OS, File):
     importlib.reload(module)
     module.Main(OS)
     del sys.modules['.'.join([package_path, module_name])]
-    OS.update()
 
 
 def Reload(OS,screen,programbar):
@@ -36,7 +40,34 @@ def Reload(OS,screen,programbar):
     app_reg = initApps(OS, screen, core_iconinfo[0], core_iconinfo[1])
     reloader_reg = initReloader(OS, screen, programbar, core_iconinfo, sys_reg, app_reg)
     while OS != None:
+        UpdateOSDisplay(OS, wallpaper)
+
+def UpdateOSDisplay(OS, wallpaper):
+    try:    
+        wallpaper.load_gif()
         OS.update()
         screen = OS.winfo_children()[0]
         wallpaper.update()
         screen.update()
+    except AttributeError:
+        OS.update()
+
+def refresh(OS):
+    res = config["Resolution"].split("x")
+    w = int(res[0])
+    h = int(res[1])
+
+    with open("Sys_Config.json", "r") as config_file:
+        config = json.load(config_file)
+    
+    if ".gif" in config["Wallpaper"]:
+        Paper = Gif(OS.screen, config["Wallpaper"])
+        
+    elif "." in config["Wallpaper"]:
+        img = Image.open(config["Wallpaper"])
+        img = img.resize((w, h), Image.ANTIALIAS)
+        Paper = ImageTk.PhotoImage(img)
+    else:
+        Paper = None
+    
+    return Paper
