@@ -22,7 +22,12 @@ class MovableFrame:
     X = 100
     Y = 100
 
-    def drag(self):
+    def config_barColor(self, color) -> None:
+        self.frame.configure(bg=color)
+        self.titlebar.configure(bg=color)
+        self.icon_label.configure(bg=color)
+
+    def drag(self) -> None:
         if self.mouseDown:
             delta_x = self.root.winfo_pointerx() - self.start_x
             delta_y = self.root.winfo_pointery() - self.start_y
@@ -33,19 +38,19 @@ class MovableFrame:
             self.start_y = self.root.winfo_pointery()
             self.after_id = self.root.after(1, self.drag)
 
-    def start_drag(self, event):
+    def start_drag(self, event) -> None:
         if self.isDrag(event):
             self.mouseDown = True
             self.start_x = self.root.winfo_pointerx()
             self.start_y = self.root.winfo_pointery()
             self.drag()
 
-    def stop_drag(self, event):
+    def stop_drag(self, event) -> None:
         self.mouseDown = False
         if hasattr(self, 'after_id'):
             self.root.after_cancel(self.after_id)
 
-    def isDrag(self, event):
+    def isDrag(self, event) -> bool:
 
         #current_x = self.frame.winfo_rootx(); edge_x = current_x + self.X
         #current_y = self.frame.winfo_rooty(); edge_y = current_y + self.Y
@@ -56,7 +61,7 @@ class MovableFrame:
         else:
             return False
     
-    def __init__(self, root, icon, size):
+    def __init__(self, root, icon, size) -> object:
         self.X, self.Y = size
 
         self.root = root
@@ -72,8 +77,8 @@ class MovableFrame:
 
         # Icon
         self.icon = ImageTk.PhotoImage(self.icon.resize((30,30)))
-        self.icon_label = tk.Label(self.titlebar, image=self.icon, width=30, height=30, bg='black')
-        self.icon_label.place(x=5, y=5)
+        self.icon_label = tk.Label(self.titlebar, image=self.icon, width=30, height=30, bg= 'gray')
+        self.icon_label.place(x=0, y=0)
 
         # Close button
         close_button = tk.Button(self.titlebar, text='X', command=self.frame.destroy, bg='red', relief='flat')

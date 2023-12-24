@@ -3,16 +3,16 @@ def Main(OS):
     import os
     import importlib.util
     from PIL import ImageTk, Image
+    from WindowsClass import MovableFrame as MF
 
     selection = T.StringVar()
 
-    FileManager = T.Toplevel(OS)
-    FileManager.title("File Manager")
-    FileManager.transient(OS)
     ProgDir = "SystemPrograms"
     ProgFolder = "FileFinder"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    FileManager.iconphoto(False, icon)
+
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[400,400])
+
+    FileManager = Frame.frame
 
     # Evil Global
     global Location
@@ -27,9 +27,10 @@ def Main(OS):
 
     lister = T.Text(FileManager,bg="gray",height=1)
     lister.insert(float(0),Location)
-    lister.grid(row=0,columnspan=2,sticky='we')
+    lister.grid(row=0,columnspan=2,sticky='we',pady=30)
+
     searchButton = T.Button(FileManager,command=SearchBar)
-    searchButton.grid(row=0,column=2,sticky='we')
+    searchButton.grid(row=0,column=2,sticky='we',pady=30)
 
     Error = T.Label(FileManager,fg="red",bg="black")
     Error.grid(row=1000,columnspan=3,sticky='we')
@@ -132,16 +133,16 @@ def FFImported(OS):
     import tkinter as T
     import os
     from PIL import ImageTk, Image
+    from WindowsClass import MovableFrame as MF
 
-    selection = T.StringVar()
-    global FileManager
-    FileManager = T.Toplevel(OS)
-    FileManager.title("File Manager")
-    FileManager.transient(OS)
     ProgDir = "SystemPrograms"
     ProgFolder = "FileFinder"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    FileManager.iconphoto(False, icon)
+
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[750,400])
+
+    FileManager = Frame.frame
+
+    selection = T.StringVar()
 
     # Evil Global
     global Location
@@ -156,9 +157,10 @@ def FFImported(OS):
 
     lister = T.Text(FileManager,bg="gray",height=1)
     lister.insert(float(0),Location)
-    lister.grid(row=0,columnspan=2,sticky='we')
+    lister.grid(row=0,columnspan=2,sticky='we',pady=30)
+
     searchButton = T.Button(FileManager,command=SearchBar)
-    searchButton.grid(row=0,column=2,sticky='we')
+    searchButton.grid(row=0,column=2,sticky='we',pady=30)
 
     Error = T.Label(FileManager,fg="red",bg="black")
     Error.grid(row=1000,columnspan=3,sticky='we')

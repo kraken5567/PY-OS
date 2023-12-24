@@ -4,11 +4,16 @@ import math
 import PIL.ImageGrab as ImageGrab
 import SystemPrograms.FileFinder.FileFinder as FF
 
+from WindowsClass import MovableFrame as MF
+
 def Main(OS):
+
+    ProgDir = "SystemPrograms"
+    ProgFolder = "Painter"
+
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[750,400])
     
-    easel = T.Toplevel(OS)
-    easel.transient(OS)
-    easel.title("Paint")
+    easel = Frame.frame
 
     def create_canvas():
         nonlocal canvas, display_width, display_height, image_width, image_height
@@ -40,7 +45,7 @@ def Main(OS):
 
     # Prompt for display resolution
     display_prompt = T.Label(easel, text="Enter the display resolution:")
-    display_prompt.grid(row=0, column=0, columnspan=2)
+    display_prompt.grid(row=0, column=0, columnspan=2, pady=(30,0))
 
     display_width_entry = T.Entry(easel)
     display_width_entry.grid(row=1, column=0)

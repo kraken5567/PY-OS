@@ -22,8 +22,7 @@ def Main(OS):
     card = random.choice(os.listdir(f"{cardDir}\\{cards}"))
 
     Frame = MF(OS, Image.open(f"{cardDir}\\{cards}\\{card}"), [750, 300])
-    Frame.frame.configure(bg=color.get())
-    Frame.titlebar.configure(bg=color.get())
+    Frame.config_barColor(color.get())
 
     table = Frame.frame 
 
