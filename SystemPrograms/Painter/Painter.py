@@ -152,13 +152,12 @@ def Main(OS):
 
 def redraw(OS,select,Location):
 
-    easel = T.Toplevel(OS)
-    easel.transient(OS)
-    easel.title("Paint")
     ProgDir = "SystemPrograms"
     ProgFolder = "Painter"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    easel.iconphoto(False, icon)
+
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[750,400])
+    
+    easel = Frame.frame
 
     # Initialize canvas
     image_width = 256
@@ -195,7 +194,7 @@ def redraw(OS,select,Location):
 
     # Prompt for image resolution
     image_prompt = T.Label(easel, text="Enter the image resolution:")
-    image_prompt.grid(row=2, column=0, columnspan=2)
+    image_prompt.grid(row=2, column=0, columnspan=2, pady=(30,0))
 
     image_width_entry = T.Entry(easel)
     image_width_entry.grid(row=3, column=0)
