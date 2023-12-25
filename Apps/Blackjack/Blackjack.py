@@ -6,6 +6,7 @@ def Main(OS):
     import random
 
     from Apps.Blackjack.Blackjack_Classes import Player
+    from WindowsClass import MovableFrame as MF 
 
     #cards ar 2.5in x 3.5in; W x H
     # card images made by Aussiesim from Game-Icons.net <3
@@ -14,16 +15,16 @@ def Main(OS):
     ProgFolder = "Blackjack"
     appDir = f"{ProgDir}\\{ProgFolder}"
     cardDir = f"{appDir}\\Cards"
+    color = T.StringVar(value="green")
+
     cardsLib = os.listdir(cardDir)
     cards = random.choice(cardsLib)
     card = random.choice(os.listdir(f"{cardDir}\\{cards}"))
-    color = T.StringVar(value="green")
 
-    table = T.Toplevel(OS,bg=color.get())
-    table.title("Blackjack")
-    table.transient(OS)
-    iconImage = ImageTk.PhotoImage(Image.open(f"{cardDir}\\{cards}\\{card}"))
-    table.iconphoto(False, iconImage) 
+    Frame = MF(OS, Image.open(f"{cardDir}\\{cards}\\{card}"), [750, 300])
+    Frame.config_barColor(color.get())
+
+    table = Frame.frame 
 
     #game related
     cards = os.listdir(cardDir)
@@ -41,7 +42,7 @@ def Main(OS):
     def initGame():
         global shelf
         shelf = T.Canvas(table,bg=color.get(),scrollregion=(0, 0, 2000, 256))
-        shelf.grid(row=1, columnspan=20)
+        shelf.grid(pady= 30, row=1, columnspan=20)
         scrollbar = T.Scrollbar(table, orient=T.HORIZONTAL, command=shelf.xview)
         scrollbar.grid(row=2, column=0, columnspan=20, sticky=T.EW)
         right_most.set(0)

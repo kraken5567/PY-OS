@@ -5,6 +5,8 @@ def Main(OS):
     import json as J
     import os
 
+    from WindowsClass import MovableFrame as MF
+
     with open("Sys_Config.json","r") as C:
         Config = J.load(C)
         C.close()
@@ -20,21 +22,17 @@ def Main(OS):
     color_hex = T.StringVar(value='#FFFFFF')
     message = T.StringVar()
 
-    Packer = T.Toplevel(OS,width=w,height=h)
-    Packer.transient(OS)
-    Packer.title("App Packer")
     ProgDir = "Apps"
     ProgFolder = "AppPacker"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    Packer.iconphoto(False, icon)
 
-    canvas = T.Canvas(Packer,bg="white",height=d.get(),width=d.get())
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[w,h])
+    Packer = Frame.frame
+
+    canvas = T.Canvas(Packer,bg="white", height=d.get(), width=d.get())
 
     coder = T.Text(Packer, bg="light gray", width=100)
     
-    coder.insert("1.0","def Main(OS): \n import tkinter as T \n from PIL import ImageTk, Image \n App = T.Toplevel(OS) \n App.transient(OS) \n App.title('Packed App') \n ProgDir = 'Apps' \n ProgFolder = #put app name here \n icon = ImageTk.PhotoImage(Image.open(f'{ProgDir}\\{ProgFolder}\\{ProgFolder}.png')) \n App.iconphoto(False, icon)")
-
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
+    coder.insert("1.0","def Main(OS): \n import tkinter as T \n from WindowsClass import MovableFrame as MF \n from PIL import Image \n width = 300; height = width; \n ProgDir = 'Apps' \n ProgFolder = #put app name here \n App = MF(OS,Image.open(f'{ProgDir}\\{ProgFolder}\\{ProgFolder}.png'),[width, height] ) \n App = App.frame \n App.mainloop()" )
 
     ProgName = T.Entry(Packer,bg="light gray")
     
@@ -105,8 +103,8 @@ def Main(OS):
     saver = T.Button(Packer,text="Save",command=save)
 
     # gridding
-    canvas.grid(row=0,column=0,columnspan=2,sticky="nw")
-    coder.grid(row=0,column=2,rowspan=5,sticky="ns")
+    canvas.grid(row=0,column=0,columnspan=2,sticky="nw",pady=30)
+    coder.grid(row=0,column=2,rowspan=5,sticky="ns",pady=30)
     ProgName.grid(row=6,column=0,columnspan=1,sticky="we")
     Error.grid(row=1000,columnspan=3,sticky='we')
 

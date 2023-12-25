@@ -2,17 +2,18 @@ def Main(OS):
     from tkinter import BooleanVar, Radiobutton, IntVar, Label, Entry, Button, Toplevel, X, Y, END
     import json as J
     import importlib.util
-    import SystemPrograms.FileFinder.FileFinder as FF
     import os
-
-    Setting_Frame = Toplevel(OS)
-    Setting_Frame.transient(OS)
-    Setting_Frame.title("Settings")
     from PIL import ImageTk, Image
+
+    import SystemPrograms.FileFinder.FileFinder as FF
+    from WindowsClass import MovableFrame as MF
+
     ProgDir = "SystemPrograms"
     ProgFolder = "Settings"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    Setting_Frame.iconphoto(False, icon)
+
+    Frame = MF(OS,Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"),[750,300])
+
+    Setting_Frame = Frame.frame
 
     Fullscreen = BooleanVar()
     
@@ -45,8 +46,8 @@ def Main(OS):
         
 
         
-        Fullscr.grid(row=1, column=0)
-        Windowed.grid(row=1, column=1)
+        Fullscr.grid(row=1, column=0, pady=(30,0))
+        Windowed.grid(row=1, column=1, pady=(30,0))
 
         RLabel.grid(row=2,column=0, columnspan=2)
         Resolution.grid(row=3, column=0, columnspan=2)
