@@ -4,14 +4,14 @@ def Main(OS):
     import importlib.util
     from PIL import ImageTk, Image
 
-    paper = T.Toplevel(OS)
-    paper.title("Notepad")
-    paper.transient(OS)
-    
+    from WindowsClass import MovableFrame as MF
+
     ProgDir = "SystemPrograms"
     ProgFolder = "Noterer"
-    icon = ImageTk.PhotoImage(Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"))
-    paper.iconphoto(False, icon)
+
+    Frame = MF(OS, Image.open(f"{ProgDir}\\{ProgFolder}\\{ProgFolder}.png"), [750,300])
+
+    paper = Frame.frame
 
     paper.columnconfigure(0, weight=1)
     paper.rowconfigure(0, weight=1)
@@ -21,7 +21,7 @@ def Main(OS):
     for x in range(h):
         code_vis.insert(f"{x+1}.0","\n")
     T.Scrollbar(code_vis)
-    code_vis.grid(row=0,columnspan=3)
+    code_vis.grid(row=0,columnspan=3,pady=30)
 
     def Exit():
         paper.destroy()

@@ -16,5 +16,6 @@ def Boot(OS):
     # - Goes away on reload
     # - Freezes when App/Prog is opened
 
-OS = initOS()
-Boot(OS)
+if __name__ == "__main__":
+    OS = initOS()
+    Boot(OS)
