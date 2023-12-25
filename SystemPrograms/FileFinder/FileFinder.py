@@ -132,7 +132,7 @@ def Main(OS):
 def FFImported(OS):
     import tkinter as T
     import os
-    from PIL import ImageTk, Image
+    from PIL import Image
     from WindowsClass import MovableFrame as MF
 
     ProgDir = "SystemPrograms"
