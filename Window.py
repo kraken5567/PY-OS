@@ -185,12 +185,10 @@ def initReloader(OS,screen,programbar,core_iconinfo,sys_reg,app_reg):
 
     return reloader_reg
 
-def UpdateOSDisplay(OS, wallpaper):
-    try:    
-        wallpaper.load_gif()
-        OS.update()
-        screen = OS.winfo_children()[0]
-        wallpaper.update()
-        screen.update()
-    except AttributeError:
-        OS.update()
+#def UpdateOSDisplay(OS):
+#    try:    
+#        OS.update()
+#        screen = OS.winfo_children()[0]
+#       screen.update()
+#    except AttributeError:
+#        OS.update()
