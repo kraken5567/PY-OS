@@ -34,10 +34,12 @@ def Main(OS):
 
     right_most = T.IntVar()
 
+    doubleDown = False
+
     resultLabel = T.Label(table)
     resultLabel.grid(row=5,columnspan=20)
     scoreLabel = T.Label(table)
-    scoreLabel.grid(row=4,column=3, columnspan=17)
+    scoreLabel.grid(row=4,column=5, columnspan=17)
 
     def initGame():
         global shelf
@@ -54,7 +56,7 @@ def Main(OS):
         return dealer, player
 
     def initdisplay(P):
-        global imgHolder
+        global imgHolder, notBetted
         imgHolder = [] #used just for blank
         cardWidth = 128
         
@@ -65,30 +67,45 @@ def Main(OS):
                 x = i * cardWidth
                 
                 img_tag = shelf.create_image(x, height, image=image, anchor=T.NW)
-                if (j == len(P) - 2) and (i+1 == len(images)):
+                if notBetted: #(j == len(P) - 2) and (i+1 == len(images))
                     image = Image.open(f"{appDir}\\Blank\\Blank.png")
+                    print(image)
                     image = image.resize((cardWidth, cardWidth))
                     cardImg = ImageTk.PhotoImage(image)
                     imgHolder.append(cardImg) 
                     img_tag = shelf.create_image(x, height, image=cardImg, anchor=T.NW)
 
     def initbuttons(P):
-        global hit, stand, bet
-        bet = T.Scale(table,bg=color.get(),from_=1, to=50, orient=T.HORIZONTAL)
+        global hit, stand, bet, setBet, double
+
+        current_score = player_score.get()
+        if current_score <= 10: 
+            bet = T.Scale(table,bg=color.get(),from_=1, to=10, orient=T.HORIZONTAL)
+        else:
+            bet = T.Scale(table,bg=color.get(),from_=1, to=player_score.get(), orient=T.HORIZONTAL)
+
+        setBet = T.Button(table,text="Lock in Bet",bg=color.get(), command= lambda: startRound(P))
+        
         hit = T.Button(table,text="Hit",bg=color.get(), command= lambda: hitButtonClicked(P, bet))
+        double = T.Button(table,text="Double Down",bg=color.get(), command= lambda: DoubleButtonClicked(P, bet))
+
         stand = T.Button(table,text="Stand",bg=color.get(), command= lambda: Stand(P))
         
         scoreLabel.config(text=f"Score: {player_score.get()}",bg=color.get())
         resultLabel.config(text="",bg=color.get())
 
         hit.grid(row=4,column=0)
+        double.grid(row=5,column=0)
+
         stand.grid(row=4,column=1)
+
         bet.grid(row=4,column=2)
+        setBet.grid(row=4,column=3)
     
     def Stand(players):
-        global imgHolder
+        global imgHolder, notBetted
 
-        del imgHolder
+        del imgHolder; notBetted = True
         table.update()
 
         dealer, player = players[0], players[1]
@@ -109,7 +126,7 @@ def Main(OS):
 
         if ((dealer.value > 21) and (player.value <= 21)) or ((player.value > dealer.value) and (player.value <= 21)):
             result = "Player Wins!"
-            player_score.set(player_score.get() + bet.get())
+            player_score.set(player_score.get() + (1 + doubleDown)*bet.get())
 
         if ((player.value > 21) and (dealer.value > 21)):
             result = "Draw!"
@@ -117,9 +134,10 @@ def Main(OS):
         if ((player.value > 21) and (dealer.value <= 21)) or (dealer.value > player.value):
             if ((player.value > 21) and (dealer.value > 21)):
                 result = "Draw!"
+
             elif (dealer.value <= 21):
                 result = "Dealer Wins!"
-                player_score.set(player_score.get() - bet.get())
+                player_score.set(player_score.get() - (1 + doubleDown)*bet.get())
 
         result += f" | Player: {player.value}, Dealer:{dealer.value}"
 
@@ -135,9 +153,37 @@ def Main(OS):
 
         initGame()
 
-    def hitButtonClicked(players, bet):
+    def DoubleButtonClicked(P, bet):
+
+        player = P[1]
+
+        player.addCard(cards)
+
+        cardObj = player.getCardObject()
+
+        player.value,player.value_list = cardObj.getValue(player.cards)
+        player.label = cardObj.label(player.value_list,False)
+
+        player.images.append(cardObj.cardImager(player.cards[-1], cardDir))
+
+        updateDisplay(P)
+
+        doubleDown = True
+
+        Stand(P)
+
+    def startRound(P):
+        global imgHolder, notBetted
+        notBetted = False
+
+        while len(imgHolder) > 1:
+            del imgHolder[1]
 
         bet.config(state=T.DISABLED)
+          
+        updateDisplay(P)
+
+    def hitButtonClicked(players, bet):
 
         player = players[1]
 
@@ -173,7 +219,8 @@ def Main(OS):
             raise TypeError("Players is None!")
 
     def GameRound():
-        global imgHolder
+        global imgHolder, notBetted
+        notBetted = True; doubleDown = False
         P = initPlayers()
         initdisplay(P)
         initbuttons(P)
