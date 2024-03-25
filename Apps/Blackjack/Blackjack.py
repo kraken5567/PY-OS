@@ -123,6 +123,7 @@ def Main(OS):
         # buttons
         hit.config(state=T.DISABLED)
         stand.config(state=T.DISABLED)
+        double.config(state=T.DISABLED)
 
         if ((dealer.value > 21) and (player.value <= 21)) or ((player.value > dealer.value) and (player.value <= 21)):
             result = "Player Wins!"
@@ -190,6 +191,8 @@ def Main(OS):
         player.addCard(cards)
 
         cardObj = player.getCardObject()
+
+        double.config(state=T.DISABLED)
 
         player.value,player.value_list = cardObj.getValue(player.cards)
         player.label = cardObj.label(player.value_list,False)
