@@ -69,7 +69,6 @@ def Main(OS):
                 img_tag = shelf.create_image(x, height, image=image, anchor=T.NW)
                 if notBetted: #(j == len(P) - 2) and (i+1 == len(images))
                     image = Image.open(f"{appDir}\\Blank\\Blank.png")
-                    print(image)
                     image = image.resize((cardWidth, cardWidth))
                     cardImg = ImageTk.PhotoImage(image)
                     imgHolder.append(cardImg) 
@@ -98,6 +97,10 @@ def Main(OS):
         double.grid(row=5,column=0)
 
         stand.grid(row=4,column=1)
+
+        hit.config(state=T.DISABLED)
+        stand.config(state=T.DISABLED)
+        double.config(state=T.DISABLED)
 
         bet.grid(row=4,column=2)
         setBet.grid(row=4,column=3)
@@ -176,6 +179,10 @@ def Main(OS):
     def startRound(P):
         global imgHolder, notBetted
         notBetted = False
+
+        hit.config(state=T.ACTIVE)
+        stand.config(state=T.ACTIVE)
+        double.config(state=T.ACTIVE)
 
         while len(imgHolder) > 1:
             del imgHolder[1]

@@ -16,7 +16,7 @@ class Gif:
         with Image.open(self.gif_path) as gif:
             for frame in range(gif.n_frames):
                 gif.seek(frame)
-                frame_image = gif.resize((self.canvas.winfo_width(), self.canvas.winfo_height()), Image.ANTIALIAS)
+                frame_image = gif.resize((self.canvas.winfo_width(), self.canvas.winfo_height()))
                 frame_image = ImageTk.PhotoImage(frame_image)
                 self.gif_frames.append(frame_image)
 

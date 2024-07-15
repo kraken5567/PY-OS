@@ -43,14 +43,20 @@ def Reload(OS,screen,programbar):
         UpdateOSDisplay(OS, wallpaper)
 
 def UpdateOSDisplay(OS, wallpaper):
-    try:    
+    screen = OS.winfo_children()[0]
+    try:
         wallpaper.load_gif()
-        OS.update()
-        screen = OS.winfo_children()[0]
         wallpaper.update()
-        screen.update()
+        wallpaperIsColor = False
     except AttributeError:
+        wallpaperIsColor = True
+
+    while OS != None:
+        if not wallpaperIsColor:
+            wallpaper.update()
+
         OS.update()
+        screen.update()
 
 def refresh(OS):
     res = config["Resolution"].split("x")
