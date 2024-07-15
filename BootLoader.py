@@ -8,29 +8,22 @@ def Boot(OS):
     sys_reg = initSystemPrograms(OS, screen, core_iconinfo[0], core_iconinfo[1])
     app_reg = initApps(OS, screen, core_iconinfo[0], core_iconinfo[1])
     reloader_reg = initReloader(OS, screen, programbar, core_iconinfo, sys_reg, app_reg)
-
-    wallpaper.load_gif()
-
-    worked = True
+    
+    try:
+        wallpaper.load_gif()
+        wallpaper.update()
+        wallpaperIsColor = False
+    except AttributeError:
+        wallpaperIsColor = True
 
     while OS != None:
-        if (worked):
-            try:
-                OS.update()
-                screen.update()
-                wallpaper.update()
-            except AttributeError:
-                worked = False
+        if not wallpaperIsColor:
+            wallpaper.update()
 
-                OS.update()
-                screen.update()
-        else:
-            OS.update()
-            screen = OS.winfo_children()[0]
-            screen.update()
+        OS.update()
+        screen.update()
 
     #fix gif
-    # - Goes away on reload
     # - Freezes when App/Prog is opened
 
 if __name__ == "__main__":
