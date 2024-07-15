@@ -12,10 +12,10 @@ def Main(OS):
         C.close()
     
     Res = Config["Resolution"].split("x")
-    w = int(Res[0])
-    h = int(Res[1])
+    w = int(int(Res[0])//2)
+    h = int(int(Res[1])//2)
 
-    d = T.IntVar(value=512)
+    d = T.IntVar(value=256)
     imageres = T.IntVar(value=32)
     brush_size = d.get()//imageres.get()
 
@@ -30,7 +30,7 @@ def Main(OS):
 
     canvas = T.Canvas(Packer,bg="white", height=d.get(), width=d.get())
 
-    coder = T.Text(Packer, bg="light gray", width=100)
+    coder = T.Text(Packer, bg="light gray", width=64)
     
     coder.insert("1.0","def Main(OS): \n import tkinter as T \n from WindowsClass import MovableFrame as MF \n from PIL import Image \n width = 300; height = width; \n ProgDir = 'Apps' \n ProgFolder = #put app name here \n App = MF(OS,Image.open(f'{ProgDir}\\{ProgFolder}\\{ProgFolder}.png'),[width, height] ) \n App = App.frame \n App.mainloop()" )
 
@@ -67,16 +67,19 @@ def Main(OS):
             b_val = int(blueSlider.get())
             color_S_button.configure(bg = f'#{r_val:02x}{g_val:02x}{b_val:02x}')
         brush_color = (r_val, g_val, b_val)
-        
+
     def paint(event):
-        global brush_color, color_hex
         x, y = event.x, event.y
         row, col = x // brush_size, y // brush_size
-        x1, y1 = row * brush_size, col * brush_size
-        x2, y2 = x1 + brush_size, y1 + brush_size
+        x1 = row * brush_size
+        y1 = col * brush_size
+        x2 = x1 + brush_size
+        y2 = y1 + brush_size
         red, green, blue = brush_color
-        color_hex = f'#{red:02x}{green:02x}{blue:02x}'  #RGB to Hex
+        color_hex = f'#{red:02x}{green:02x}{blue:02x}'  # RGB to Hex
         canvas.create_rectangle(x1, y1, x2, y2, fill=color_hex, outline=color_hex)
+
+    
     canvas.bind('<B1-Motion>', lambda event: paint(event))
 
     def save():
