@@ -70,7 +70,7 @@ class MovableFrame:
         self.frame = tk.Frame(root, width=self.X, height=self.Y, bg='white')
         self.frame.place(x=self.start_x, y=self.start_y)
 
-        self.titlebar = tk.Frame(self.frame, height=30, bg='gray')
+        self.titlebar = tk.Frame(self.frame, width=Self.X, height=30, bg='gray')
         self.titlebar.place(relx=0, rely=0, relwidth=1, anchor='nw')
         self.titlebar.bind("<ButtonPress-1>", self.start_drag)
         self.titlebar.bind("<ButtonRelease-1>", self.stop_drag)
