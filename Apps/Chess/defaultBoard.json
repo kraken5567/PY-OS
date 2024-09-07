@@ -1,0 +1,8 @@
+{
+    "Board":
+    "r,n,b,q,k,b,n,r;p,p,p,p,p,p,p,p;x,x,x,x,x,x,x,x;x,x,x,x,x,x,x,x;x,x,x,x,x,x,x,x;x,x,x,x,x,x,x,x;P,P,P,P,P,P,P,P;R,N,B,Q,K,B,N,R",
+
+    "turn":"w", 
+    "White Castle":"KQ",
+    "Black Castle":"kq"
+}
