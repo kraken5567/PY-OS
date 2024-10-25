@@ -1,5 +1,5 @@
 Licensing Agreement
-Copyright (c) April, 2023 kraken5567
+October, 2024 kraken5567
 
 You can:
 - sell custom made code for OS
